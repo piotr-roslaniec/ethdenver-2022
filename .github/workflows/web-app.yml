@@ -38,7 +38,7 @@ jobs:
         with:
           working-directory: web-app/${{ matrix.example }}
 
-      - name: Build WASM
+      - name: Build web-app
         run: yarn run build
         working-directory: web-app/${{ matrix.example }}
 

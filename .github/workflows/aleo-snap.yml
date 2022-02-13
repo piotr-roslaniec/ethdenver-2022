@@ -38,8 +38,8 @@ jobs:
         with:
           working-directory: aleo-snap/${{ matrix.example }}
 
-      - name: Build WASM
-        run: yarn run build
+      - name: Build aleo-snap
+        run: yarn build && yarn build:website
         working-directory: aleo-snap/${{ matrix.example }}
 
       - name: Deploy to Netlify
