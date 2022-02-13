@@ -1,10 +1,6 @@
 [package]
-name = "sdk"
-version = "0.3.1"
-authors = ["The Aleo Team <hello@aleo.org>"]
-description = "Aleo"
-homepage = "https://aleo.org"
-repository = "https://github.com/AleoHQ/aleo"
+name = "aleo-wasm"
+version = "0.3.2"
 keywords = ["aleo", "cryptography", "blockchain", "decentralized", "zero-knowledge"]
 categories = ["cryptography::cryptocurrencies", "operating-systems"]
 include = ["Cargo.toml", "src", "README.md", "LICENSE.md"]

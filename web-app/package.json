@@ -31,9 +31,7 @@
     "preinstall": "cd ../aleo/wasm && wasm-pack build",
     "start": "webpack-dev-server",
     "dev": "webpack-dev-server",
-    "build": "webpack --config webpack.config.js",
-    "predeploy": "yarn build",
-    "deploy": "gh-pages -d build"
+    "build": "webpack --config webpack.config.js"
   },
   "eslintConfig": {
     "extends": [
@@ -52,5 +50,8 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://aleohq.github.io/aleo"
+  "homepage": "https://aleohq.github.io/aleo",
+  "engines": {
+    "node": ">=14.18.0"
+  }
 }

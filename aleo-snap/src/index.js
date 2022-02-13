@@ -1,3 +1,5 @@
+const { randomAddress } = require('./aleo');
+
 wallet.registerRpcMessageHandler(async (originString, requestObject) => {
   switch (requestObject.method) {
     case 'hello':
@@ -13,6 +15,8 @@ wallet.registerRpcMessageHandler(async (originString, requestObject) => {
           },
         ],
       });
+    case 'aleo_get_account_address':
+      return randomAddress();
     default:
       throw new Error('Method not found.');
   }
