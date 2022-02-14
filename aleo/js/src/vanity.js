@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+// ToDo add better support for bech32
 const core = require('./core.js');
 
 (async () => {
@@ -14,7 +15,6 @@ const core = require('./core.js');
 
     }
     var ALPHABET = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijlkmnopqrstuvwxyz'
-    // ToDo check why 'i,b' isn't valid (I tested by running the script for a while and saw no addresses that contained 'i,b')
     var INVALID_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZbi'
     for (var i = 0; i < match.length; i++) {
         if (ALPHABET.indexOf(match[i]) < 0 || INVALID_CHARS.indexOf(match[i]) >= 0) {
