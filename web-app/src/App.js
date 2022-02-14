@@ -5,6 +5,7 @@ import {Layout, Menu} from 'antd';
 import {NewAccount} from "./NewAccount";
 import {AccountFromPrivateKey} from "./AccountFromPrivateKey";
 import DecryptRecord from "./DecryptRecord";
+import {AccountFromVanity} from "./AccountFromVanity";
 
 const {Header, Content, Footer} = Layout;
 
@@ -32,6 +33,8 @@ function App() {
                         <NewAccount/>
                         <br/>
                         <AccountFromPrivateKey/>
+                        <br/>
+                        <AccountFromVanity/>
                     </>
                 }
                 {
