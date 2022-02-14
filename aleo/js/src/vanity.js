@@ -1,14 +1,21 @@
 #!/usr/bin/env node
 
 const core = require('./core.js');
+let { bech32, bech32m } = require('bech32');
+
 (async() => {
     if (process.argv.length <= 2){
         console.log("Please enter a term to find, with an optional password, e.g. node vanity.js test [password]");
         return;
     }
     var match = process.argv[2];
-    var ALPHABET = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijlkmnopqrstuvwxyz'
+    if (match.length >= 9){
+        console.log("Warning, over vanities 9 characters are expected to take longer than 3 hours and may timeout.");
+        console.log("Strongly suggest reducing the input size to below 9 chars");
 
+    }
+    var ALPHABET = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijlkmnopqrstuvwxyz'
+    // console.log(bech32.decode(match));
     // ToDo check why 'i,b' isn't valid (I tested by running the script for a while and saw no addresses that contained 'i,b')
     var INVALID_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZbi'
     for(var i = 0; i < match.length; i++){
