@@ -1,0 +1,13 @@
+diff --git a/node_modules/aleo-wasm/package.json b/node_modules/aleo-wasm/package.json
+index 91110cf..430b77b 100644
+--- a/node_modules/aleo-wasm/package.json
++++ b/node_modules/aleo-wasm/package.json
+@@ -8,7 +8,7 @@
+     "aleo_wasm.d.ts",
+     "LICENSE.md"
+   ],
+-  "browser": "aleo_wasm.js",
++  "main": "aleo_wasm.js",
+   "types": "aleo_wasm.d.ts",
+   "keywords": [
+     "aleo",
