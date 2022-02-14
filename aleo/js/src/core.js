@@ -1,4 +1,5 @@
-const aleo = require('aleo-wasm');
+// ToDo stop hardcoding this
+const aleo = require('../aleo-wasm');
 
 class Account {
     constructor() {
@@ -20,4 +21,4 @@ class Account {
 
 module.exports.Account = Account;
 
-console.log(new Account().address());
+// console.log(new Account().address());
