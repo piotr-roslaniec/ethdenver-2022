@@ -14,24 +14,26 @@
     "snap.manifest.json"
   ],
   "scripts": {
+    "preinstall": "cd ../aleo/wasm && ./build.sh",
     "build:clean": "yarn clean && yarn build",
     "build:website": "node ./scripts/build-website.js",
-    "build": "mm-snap build",
+    "build": "mm-snap build --transpilationMode all",
     "serve": "mm-snap serve",
     "clean": "rimraf dist/*",
     "test": "echo 'TODO'",
     "lint:eslint": "eslint . --cache --ext js,ts",
     "lint:misc": "prettier '**/*.json' '**/*.md' '!CHANGELOG.md' --ignore-path .gitignore",
     "lint": "yarn lint:eslint && yarn lint:misc --check",
-    "lint:fix": "yarn lint:eslint --fix && yarn lint:misc --write",
-    "lint:changelog": "yarn auto-changelog validate"
+    "lint:fix": "yarn lint:eslint --fix && yarn lint:misc --write"
+  },
+  "dependencies": {
+    "aleo-wasm": "file:../aleo/wasm/pkg"
   },
   "devDependencies": {
-    "@metamask/auto-changelog": "^2.5.0",
     "@metamask/eslint-config": "^8.0.0",
     "@metamask/eslint-config-jest": "^8.0.0",
     "@metamask/eslint-config-nodejs": "^8.0.0",
-    "@metamask/snaps-cli": "^0.7.0",
+    "@metamask/snaps-cli": "0.9.0",
     "eslint": "^7.30.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.23.4",
@@ -47,6 +49,6 @@
     "registry": "https://registry.npmjs.org/"
   },
   "engines": {
-    "node": ">=12.11.0"
+    "node": ">=14.18.0"
   }
 }
