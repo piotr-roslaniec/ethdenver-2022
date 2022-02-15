@@ -1,15 +1,10 @@
-const aleo = require('aleo-wasm');
+const aleo = require('aleo-wasm-bundler');
 
-// const randomAddress = () => new aleo.Account().to_address();
-// const randomAddress = () => "not-a-real-address";
-const randomAddress = () => JSON.stringify(aleo); // returns "{}"
+const randomAddress = () => new aleo.Account().to_address();
 
 console.log({ aleo });
-// Returns during eval step:
-// 
-// Object <[Object: null prototype] {}> {
-//   aleo: Object <[Object: null prototype] {}> {}
-// } 
+console.log({ Account: aleo.Account });
+console.log({ to_address: aleo.Account.to_address });
 
 module.exports = {
   randomAddress,

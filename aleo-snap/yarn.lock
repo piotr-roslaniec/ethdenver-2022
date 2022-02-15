@@ -1680,6 +1680,11 @@ ajv@^8.0.1, ajv@^8.8.2:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
+"aleo-wasm-bundler@file:../aleo-wasm-bundler":
+  version "0.1.0"
+  dependencies:
+    aleo-wasm "file:../../../../../.cache/yarn/v6/npm-aleo-wasm-bundler-0.1.0-e71cfb87-db86-4942-86f0-c2949d09c493-1644881106658/node_modules/aleo/wasm/pkg"
+
 "aleo-wasm@file:../aleo/wasm/pkg":
   version "0.3.2"
 
