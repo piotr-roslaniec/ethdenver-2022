@@ -1,0 +1,29 @@
+{
+  "name": "aleo-wasm-bundler",
+  "version": "0.1.0",
+  "description": "A webpack bundler for aleo-wasm",
+  "main": "dist/index.js",
+  "private": true,
+  "author": "Piotr Roslaniec <p.roslaniec@gmail.com>",
+  "scripts": {
+    "preinstall": "#cd ../aleo/wasm && wasm-pack build --target bundler",
+    "postinstall": "#patch-package",
+    "clean": "rimraf dist",
+    "build": "webpack --config webpack.config.js",
+    "build:clean": "rimraf node_modules/aleo-wasm && yarn clean && yarn install --check-files && yarn build",
+    "patch-package": "patch-package --exclude 'nothing' aleo-wasm"
+  },
+  "license": "GPL-3.0-only",
+  "dependencies": {
+    "aleo-wasm": "file:../aleo/wasm/pkg"
+  },
+  "devDependencies": {
+    "patch-package": "^6.4.7",
+    "rimraf": "^3.0.2",
+    "webpack": "^4.29.3",
+    "webpack-cli": "^3.1.0"
+  },
+  "resolutions": {
+    "glob-parent": "5.1.2"
+  }
+}

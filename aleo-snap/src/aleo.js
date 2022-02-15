@@ -1,4 +1,4 @@
-const aleo = require('aleo-wasm');
+const aleo = require('aleo-wasm-bundler');
 
 // const randomAddress = () => new aleo.Account().to_address();
 // const randomAddress = () => "not-a-real-address";

@@ -1,12 +1,11 @@
-diff --git a/node_modules/aleo-wasm/aleo_wasm.js b/node_modules/aleo-wasm/aleo_wasm.js
-index 6ec53ab..aaa67e5 100644
---- a/node_modules/aleo-wasm/aleo_wasm.js
-+++ b/node_modules/aleo-wasm/aleo_wasm.js
-@@ -3,6 +3,104 @@ let wasm_bindgen;
-     const __exports = {};
-     let wasm;
+diff --git a/node_modules/aleo-wasm/aleo_wasm_bg.js b/node_modules/aleo-wasm/aleo_wasm_bg.js
+index 996586b..ffaa8cc 100644
+--- a/node_modules/aleo-wasm/aleo_wasm_bg.js
++++ b/node_modules/aleo-wasm/aleo_wasm_bg.js
+@@ -1,5 +1,103 @@
+ import * as wasm from './aleo_wasm_bg.wasm';
  
-+    // TextEncoder/TextDecoder polyfills for utf-8 - an implementation of TextEncoder/TextDecoder APIs
++// TextEncoder/TextDecoder polyfills for utf-8 - an implementation of TextEncoder/TextDecoder APIs
 +// Written in 2013 by Viktor Mukhachev <vic99999@yandex.ru>
 +// To the extent possible under law, the author(s) have dedicated all copyright and related and neighboring rights to this software to the public domain worldwide. This software is distributed without any warranty.
 +// You should have received a copy of the CC0 Public Domain Dedication along with this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
@@ -29,7 +28,7 @@ index 6ec53ab..aaa67e5 100644
 +TextEncoder.prototype.encode = function (string) {
 +  var octets = [];
 +  if (!string) {
-+      return octets;
++    return octets; 
 +  }
 +  var length = string.length;
 +  var i = 0;
@@ -67,7 +66,7 @@ index 6ec53ab..aaa67e5 100644
 +TextDecoder.prototype.decode = function (octets) {
 +  var string = "";
 +  if (!octets) {
-+    return string;
++    return string; 
 +  }
 +  var i = 0;
 +  while (i < octets.length) {
@@ -104,6 +103,6 @@ index 6ec53ab..aaa67e5 100644
 +  return string
 +};
 +
-     let cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
+ const lTextDecoder = typeof TextDecoder === 'undefined' ? (0, module.require)('util').TextDecoder : TextDecoder;
  
-     cachedTextDecoder.decode();
+ let cachedTextDecoder = new lTextDecoder('utf-8', { ignoreBOM: true, fatal: true });
