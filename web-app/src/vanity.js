@@ -2,18 +2,20 @@
 
 // ToDo add better support for bech32
 
-export const findAddressContainingSubstring = (match, aleo) => {
-    if (match.length >= 9) {
+export const findAddressContainingSubstring = (substr, aleo) => {
+    console.log("Searching for address containing: " + substr);
+
+    if (substr.length >= 9) {
         console.log("Warning, vanities over 9 characters are expected to take longer than 3 hours and may timeout.");
         console.log("Strongly suggest reducing the input size to below 9 chars");
     }
     var ALPHABET = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijlkmnopqrstuvwxyz'
     var INVALID_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZbi'
-    for (var i = 0; i < match.length; i++) {
-        if (ALPHABET.indexOf(match[i]) < 0 || INVALID_CHARS.indexOf(match[i]) >= 0) {
+    for (var i = 0; i < substr.length; i++) {
+        if (ALPHABET.indexOf(substr[i]) < 0 || INVALID_CHARS.indexOf(substr[i]) >= 0) {
             console.log("Your search term is not valid - please ensure search term only includes bech32 valid characters: " + ALPHABET);
             console.log("These characters are invalid: " + INVALID_CHARS);
-            console.error("Found this invalid char: " + match[i]);
+            console.error("Found this invalid char: " + substr[i]);
             return null;
         }
     }
@@ -25,7 +27,7 @@ export const findAddressContainingSubstring = (match, aleo) => {
     // ToDo Try using seeds to increase randomness
     // ToDo find the equivalents of tick() for browser
 
-    while (!address.includes(match)) {
+    while (!address.startswith(substr)) {
         account = new aleo.Account();
         address = account.to_address();
         console.log("Checked " + cc++ + " hashes");
@@ -39,3 +41,4 @@ export const findAddressContainingSubstring = (match, aleo) => {
 
     return account;
 }
+
