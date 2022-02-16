@@ -1,9 +1,10 @@
-diff --git a/node_modules/aleo-wasm/aleo_wasm_bg.js b/node_modules/aleo-wasm/aleo_wasm_bg.js
-index 996586b..ffaa8cc 100644
---- a/node_modules/aleo-wasm/aleo_wasm_bg.js
-+++ b/node_modules/aleo-wasm/aleo_wasm_bg.js
-@@ -1,5 +1,103 @@
- import * as wasm from './aleo_wasm_bg.wasm';
+diff --git a/node_modules/aleo-wasm/aleo_wasm.js b/node_modules/aleo-wasm/aleo_wasm.js
+index 516cea2..015f21d 100644
+--- a/node_modules/aleo-wasm/aleo_wasm.js
++++ b/node_modules/aleo-wasm/aleo_wasm.js
+@@ -1,6 +1,104 @@
+ 
+ let wasm;
  
 +// TextEncoder/TextDecoder polyfills for utf-8 - an implementation of TextEncoder/TextDecoder APIs
 +// Written in 2013 by Viktor Mukhachev <vic99999@yandex.ru>
@@ -103,6 +104,6 @@ index 996586b..ffaa8cc 100644
 +  return string
 +};
 +
- const lTextDecoder = typeof TextDecoder === 'undefined' ? (0, module.require)('util').TextDecoder : TextDecoder;
+ let cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
  
- let cachedTextDecoder = new lTextDecoder('utf-8', { ignoreBOM: true, fatal: true });
+ cachedTextDecoder.decode();

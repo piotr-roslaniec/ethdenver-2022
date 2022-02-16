@@ -14,16 +14,18 @@
     "snap.manifest.json"
   ],
   "scripts": {
+    "postinstall": "patch-package",
     "build:clean": "rm -rf node_modules/aleo-wasm-bundler && yarn install --check-files && yarn clean && yarn build",
     "build:website": "node ./scripts/build-website.js",
-    "build": "mm-snap build --transpilationMode all --verboseErrors",
+    "build": "yarn wasm:hex && mm-snap build --transpilationMode all --verboseErrors",
     "serve": "mm-snap serve",
     "clean": "rimraf dist",
     "test": "echo 'TODO'",
     "lint:eslint": "eslint . --cache --ext js,ts",
     "lint:misc": "prettier '**/*.json' '**/*.md' '!CHANGELOG.md' --ignore-path .gitignore",
     "lint": "yarn lint:eslint && yarn lint:misc --check",
-    "lint:fix": "yarn lint:eslint --fix && yarn lint:misc --write"
+    "lint:fix": "yarn lint:eslint --fix && yarn lint:misc --write",
+    "wasm:hex": "node ./scripts/wasm-hex.js"
   },
   "dependencies": {
     "aleo-wasm-bundler": "file:../aleo-wasm-bundler"
@@ -40,7 +42,6 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.4.0",
     "mkdirp": "^1.0.4",
-    "patch-package": "^6.4.7",
     "prettier": "^2.3.2",
     "rimraf": "^3.0.2"
   },

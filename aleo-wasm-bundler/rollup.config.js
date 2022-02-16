@@ -1,13 +1,21 @@
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
-import { wasm } from '@rollup/plugin-wasm';
+import wasmImport from 'rollup-wasm-pack-import';
+
 import pkg from './package.json';
 
 const input = 'index.js';
 const plugins = [
     resolve(), // so Rollup can find `ms`
     commonjs(), // so Rollup can convert `ms` to an ES module
-    wasm(),    // so Rollup can kiad *.wasm files
+    // wasm({ sync: ['aleo_wasm_bg.wasm'] }),    // so Rollup can kiad *.wasm files
+    wasmImport({
+        copy: true,
+        serverPath: '/',
+        mapping: {
+            'aleo-wasm': 'aleo_wasm_bg.wasm'
+        }
+    })
 ]
 
 export default [

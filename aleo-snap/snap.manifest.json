@@ -7,7 +7,7 @@
     "url": "https://github.com/MetaMask/snap-template.git"
   },
   "source": {
-    "shasum": "zH1vo701SL+anizH+ubSrT+JB7APBxvockb7oT4Qu7k=",
+    "shasum": "mICUV2jBhWjeVzXJafT0y/BAmcBAAEW66uL7Pg6i7s4=",
     "location": {
       "npm": {
         "filePath": "dist/bundle.js",
@@ -18,7 +18,9 @@
     }
   },
   "initialPermissions": {
-    "snap_confirm": {}
+    "snap_confirm": {},
+    "endowment:network-access": {},
+    "endowment:wasm": {}
   },
   "manifestVersion": "0.1"
 }

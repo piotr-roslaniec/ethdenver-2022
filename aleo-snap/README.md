@@ -1,9 +1,19 @@
 # `aleo-snap`
 
-# Usage
+## Usage
+
+Build deps:
 
 ```bash
-yarn install
+cd ../aleo-wasm-bundler
+yarn install --check-files
+yarn build:clean
+```
+
+No w build this project:
+
+```bash
+yarn install --check-files
 yarn build
 yarn serve
 ```
