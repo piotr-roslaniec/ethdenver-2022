@@ -17,7 +17,7 @@
 use aleo_account::{Account as AccountNative, PrivateKey};
 
 use rand::{rngs::StdRng, SeedableRng};
-use std::str::FromStr;
+use std::{convert::TryInto, str::FromStr};
 use wasm_bindgen::prelude::*;
 
 #[wasm_bindgen]
@@ -44,6 +44,18 @@ impl Account {
 
         Self {
             account: AccountNative::from(private_key),
+        }
+    }
+
+    #[wasm_bindgen]
+    pub fn from_seed(seed: Vec<u8>) -> Self {
+        console_error_panic_hook::set_once();
+
+        let seed: [u8; 32] = seed.try_into().unwrap();
+        let rng = &mut StdRng::from_seed(seed);
+
+        Self {
+            account: AccountNative::new(rng),
         }
     }
 

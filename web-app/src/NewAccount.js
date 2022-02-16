@@ -39,7 +39,7 @@ export const NewAccount = () => {
             </Form>
             <Row justify="center">
                 <Col>
-                    <Button type="primary" onClick={generateAccount} shape="round" size="large" loading={!!loading}>Generate</Button>
+                    <Button type="primary" disabled={!substr} onClick={generateAccount} shape="round" size="large" loading={!!loading}>Generate</Button>
                 </Col>
             </Row>
             {

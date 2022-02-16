@@ -2,7 +2,8 @@ const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-    mode: 'production',
+    // mode: 'production', // TODO: Enable
+    mode: 'development',
     output: {
         path: path.join(__dirname, '/dist'),
         filename: 'index.bundle.js'

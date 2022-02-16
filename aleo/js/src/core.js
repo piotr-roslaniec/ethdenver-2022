@@ -20,5 +20,3 @@ class Account {
 }
 
 module.exports.Account = Account;
-
-// console.log(new Account().address());
