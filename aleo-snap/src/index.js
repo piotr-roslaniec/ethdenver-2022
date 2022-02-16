@@ -18,7 +18,7 @@ let wasm;
 const initializeWasm = async () => {
   try {
     const wasmBuffer = arrayBufferFromHex(PROGRAM_WASM_HEX);
-    const wasmModule = WebAssembly.compile(wasmBuffer);
+    const wasmModule = await WebAssembly.compile(wasmBuffer);
     wasm = await aleo.default(wasmModule);
   } catch (error) {
     console.error('Failed to initialize WebAssembly module.', error);
@@ -46,8 +46,7 @@ wallet.registerRpcMessageHandler(async (originString, requestObject) => {
         ],
       });
     case 'aleo_get_account_address':
-      // return JSON.stringify({ wasm });
-      // return new wasm.Account().to_address();
+      // return JSON.stringify({ wasm }) + '\n' + JSON.stringify({ aleo });
       return new aleo.Account().to_address();
     default:
       throw ethErrors.rpc.methodNotFound({ data: { request: requestObject } });

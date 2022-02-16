@@ -15,7 +15,7 @@ const plugins = [
         mapping: {
             'aleo-wasm': 'aleo_wasm_bg.wasm'
         }
-    })
+    }),
 ]
 
 export default [

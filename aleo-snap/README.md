@@ -10,7 +10,7 @@ yarn install --check-files
 yarn build:clean
 ```
 
-No w build this project:
+Now build this project:
 
 ```bash
 yarn install --check-files
