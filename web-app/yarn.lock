@@ -1037,6 +1037,18 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@remote-ui/rpc@^1.2.5":
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/@remote-ui/rpc/-/rpc-1.2.6.tgz#33ebfd97f5d5ab16b000bacbe392d96738b3d693"
+  integrity sha512-KdfDEnQEJmlNh8gbcPMG5Ldae94rsRytDqeuFUVsviQQ2CDui3RygN64iZlw8bVqbKiRpJ66hlVfpHkY6NbEDg==
+
+"@shopify/web-worker@^4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@shopify/web-worker/-/web-worker-4.0.2.tgz#4a787223ac6d0706003f01f24f78c928b55a49c4"
+  integrity sha512-PCpNPYLYqURrAnMTJ7/qgE2/D8bvrF9SawfWDRlbWqrgBkRMJKuXimzfQBtQq+AevnAVI3adUMrSTmrrSAAyJw==
+  dependencies:
+    "@remote-ui/rpc" "^1.2.5"
+
 "@types/body-parser@*":
   version "1.19.2"
   resolved "https://registry.yarnpkg.com/@types/body-parser/-/body-parser-1.19.2.tgz#aea2059e28b7658639081347ac4fab3de166e6f0"

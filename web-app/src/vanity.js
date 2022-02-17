@@ -1,8 +1,6 @@
-const { SHA3 } = require('sha3');
+const { createWorkerFactory } = require('@shopify/web-worker');
 
-// ToDo add better support for bech32
-
-export const findAddressContainingSubstring = (substr, aleo) => {
+export const findAddressContainingSubstring = async (aleo, substr) => {
     console.log("Searching for address containing: " + substr);
 
     if (substr.length >= 9) {
@@ -20,26 +18,36 @@ export const findAddressContainingSubstring = (substr, aleo) => {
         }
     }
 
-    let address = makeAccount(aleo, `${substr}_${cc}`).account.to_address();
+    const createWorker = createWorkerFactory(() => import('./vanity-worker'));
 
-    // ToDo Try using seeds to increase randomness
-    // ToDo find the equivalents of tick() for browser
-
-    let cc = 1
+    let epoch = 1
     do {
-        cc++;
-        if (cc > 100) {
-            return null;
+        console.log("Epoch: " + epoch);
+
+        epoch++;
+        // if (epoch > 2) {
+            // return null;
+        // }
+
+        let promises = []
+        for (let i = 0; i < 8; i++) {
+            const seed = `${substr}_${epoch}_${i}`;
+            const worker = createWorker();
+            promises.push(worker.makeAccount(aleo, seed));
         }
 
-        const { account, seed } = makeAccount(aleo, `${substr}_${cc}`);
-        address = account.to_address();
-        console.log(`Checked seed ${seed}: ${address}`);
+        const results = await Promise.all(promises);
 
-        const ALEO_ADDR_PREFIX = 'aleo1';
-        const prefix = `${ALEO_ADDR_PREFIX}${substr}`
-        if (address.startsWith(prefix)) {
-            return account;
+        for (const result of results) {
+            const { account, seed } = result;
+            const address = account.to_address();
+            console.log(`${seed} => ${address}`);
+
+            const ALEO_ADDR_PREFIX = 'aleo1';
+            const prefix = `${ALEO_ADDR_PREFIX}${substr}`
+            if (address.startsWith(prefix)) {
+                return account;
+            }
         }
     } while (true);
 
@@ -47,11 +55,3 @@ export const findAddressContainingSubstring = (substr, aleo) => {
     return null;
 }
 
-const makeAccount = (aleo, seed) => {
-    const hash = new SHA3(256);
-    hash.update(seed);
-    const buffer = hash.digest();
-
-    const account = aleo.Account.from_seed(buffer);
-    return { account, seed };
-}

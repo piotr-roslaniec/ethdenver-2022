@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Button, Card, Col, Divider, Form, Input, Row } from "antd";
+
 import { CopyButton } from "./CopyButton";
 import { useAleoWASM } from "./aleo-wasm-hook";
 import { findAddressContainingSubstring } from "./vanity";
-
 
 export const NewAccount = () => {
     const [account, setAccount] = useState(null);
@@ -16,7 +16,8 @@ export const NewAccount = () => {
     const generateAccount = async () => {
         clear();
         setLoading(true);
-        setAccount(findAddressContainingSubstring(substr, aleo));
+        const account = await findAddressContainingSubstring(aleo, substr);
+        setAccount(account);
         setLoading(false);
 
         // setTimeout(() => {
