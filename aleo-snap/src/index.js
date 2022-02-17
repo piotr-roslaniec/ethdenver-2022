@@ -26,6 +26,9 @@ const initializeWasm = async () => {
   }
 };
 
+let account;
+const ALEO_PRIVATE_KEY = "APrivateKey1zkp8cC4jgHEBnbtu3xxs1Ndja2EMizcvTRDq5Nikdkukg1p";
+
 wallet.registerRpcMessageHandler(async (originString, requestObject) => {
   if (!wasm) {
     await initializeWasm();
@@ -46,8 +49,11 @@ wallet.registerRpcMessageHandler(async (originString, requestObject) => {
         ],
       });
     case 'aleo_get_account_address':
-      // return JSON.stringify({ wasm }) + '\n' + JSON.stringify({ aleo });
-      return new aleo.Account().to_address();
+      console.log({ wasm });
+      console.log({ aleo });
+      account = aleo.Account.from_private_key(ALEO_PRIVATE_KEY);
+      console.log({ account });
+      return account.to_address();
     default:
       throw ethErrors.rpc.methodNotFound({ data: { request: requestObject } });
   }
