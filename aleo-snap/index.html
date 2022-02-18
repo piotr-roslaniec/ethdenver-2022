@@ -6,8 +6,9 @@
 </head>
 
 <body>
-  <h1>Hello, Snaps!</h1>
-  <details>
+  <h1>Aleo Snap</h1>
+  <h2>Aleo wallet implementation using MetaMask Snaps</h2>
+  <!-- <details>
     <summary>Instructions</summary>
     <ul>
       <li>First, click "Connect". Then, try out the other buttons!</li>
@@ -23,63 +24,114 @@
         </li>
       </ul>
     </ul>
-  </details>
+  </details> -->
   <br />
 
+  <p>First, let's connect to MetaMask and install the snap.</p>
   <button class="connect">Connect</button>
-  <button class="sendHello">Send Hello</button>
-  <button class="getAccountAddress">Get Account Address</button>
+  <br />
+  <br />
+
+  <div id="accountButtonDiv" style="display: none;">
+    <p>Now, let's create an Aleo-compatible wallet inside the snap.</p>
+    <button class="getAccount">Get Account</button>
+    <br />
+  </div>
+
+  <div id="account" style="display: none;">
+    <h3>Account</h3>
+    <ul>
+      <li>
+        Address: <code><span id="accountAddress"></span></code>
+      </li>
+      <li>
+        View Key: <code><span id="viewKey"></span></code>
+      </li>
+      <li>
+        Private Key: <code><span id="privateKey"></span></code>
+      </li>
+    </ul>
+  </div>
+  <br />
+
+  <div id="sendTxBtnDiv" style="display: none;">
+    <p>Finally, we send a transaction using our wallet.<p>
+    <button class="sendTx">Send Transaction</button>
+  </div>
+  <br />
 </body>
 
 <script>
   const snapId = `local:${window.location.href}`;
 
   const connectButton = document.querySelector('button.connect')
-  const sendButton = document.querySelector('button.sendHello')
-  const getAccountAddressButton = document.querySelector('button.getAccountAddress')
+  const getAccountButton = document.querySelector('button.getAccount')
+  const sendTxButton = document.querySelector('button.sendTx')
 
   connectButton.addEventListener('click', connect)
-  sendButton.addEventListener('click', send)
-  getAccountAddressButton.addEventListener('click', getAccountAddress)
+  getAccountButton.addEventListener('click', getAccount)
+  sendTxButton.addEventListener('click', sendTransaction)
 
-  // here we get permissions to interact with and install the snap
   async function connect() {
-    await ethereum.request({
-      method: 'wallet_enable',
-      params: [{
-        wallet_snap: { [snapId]: {} },
-      }]
-    })
+    try {
+      await ethereum.request({
+        method: 'wallet_enable',
+        params: [{
+          wallet_snap: { [snapId]: {} },
+        }]
+      })
+
+      document.querySelector('#accountButtonDiv').style.display = 'block'
+    } catch (error) {
+      // The `wallet_enable` call will throw if the requested permissions are
+      // rejected.
+      if (error.code === 4001) {
+        console.error('The user rejected the request.');
+        alert('The user rejected the request.');
+      } else {
+        console.error(error)
+        alert('Problem happened: ' + error.message || error)
+      }
+    }
   }
 
-  // here we call the snap's "hello" method
-  async function send() {
+  async function getAccount() {
+    try {
+      const account = await ethereum.request({
+        method: 'wallet_invokeSnap',
+        params: [snapId, {
+          method: 'aleo_get_account',
+          params: ['fake-seed'],
+        }]
+      })
+
+      console.log(JSON.stringify(account, null, 2))
+      document.querySelector('#accountAddress').innerText = account.address
+      document.querySelector('#viewKey').innerText = account.view_key
+      document.querySelector('#privateKey').innerText = 'Never leaves MetaMask!'
+      document.querySelector('#account').style.display = 'block'
+      document.querySelector('#sendTxBtnDiv').style.display = 'block'
+    } catch (error) {
+      console.error(error)
+      alert('Problem happened: ' + error.message || error)
+    }
+  }
+
+  async function sendTransaction() {
     try {
       const response = await ethereum.request({
         method: 'wallet_invokeSnap',
         params: [snapId, {
-          method: 'hello'
+          method: 'aleo_send_transaction',
+          params: ['fake-seed', 'fake-tx'],
         }]
       })
-    } catch (err) {
-      console.error(err)
-      alert('Problem happened: ' + err.message || err)
-    }
-  }
-
-  async function getAccountAddress() {
-    try {
-      const accountAddress = await ethereum.request({
-        method: 'wallet_invokeSnap',
-        params: [snapId, {
-          method: 'aleo_get_account_address'
-        }]
-      })
-      console.log(`Account address: ${accountAddress}`)
+      console.log({ response })
     } catch (err) {
       console.error(err)
       alert('Problem happened: ' + err.message || err)
     }
   }
 </script>
+
 </html>

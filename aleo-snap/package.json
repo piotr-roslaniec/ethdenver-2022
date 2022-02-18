@@ -28,7 +28,8 @@
     "wasm:hex": "node ./scripts/wasm-hex.js"
   },
   "dependencies": {
-    "aleo-wasm-bundler": "file:../aleo-wasm-bundler"
+    "aleo-wasm-bundler": "file:../aleo-wasm-bundler",
+    "sha3": "^2.1.4"
   },
   "devDependencies": {
     "@metamask/eslint-config": "^8.0.0",

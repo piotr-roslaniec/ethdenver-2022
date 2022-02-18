@@ -21,6 +21,7 @@ path = "../rust/transaction"
 
 [dependencies.getrandom]
 version = "0.2"
+default-features = false
 features = ["js"]
 
 [dependencies.hex]

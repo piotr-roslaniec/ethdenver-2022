@@ -1,6 +1,8 @@
 const { ethErrors } = require('eth-rpc-errors');
 const aleo = require('aleo-wasm-bundler');
 
+const { SHA3 } = require('sha3');
+
 const { PROGRAM_WASM_HEX } = require('./wasm');
 
 // kudos: https://stackoverflow.com/a/71083193
@@ -14,6 +16,11 @@ function arrayBufferFromHex(hexString) {
 }
 
 let wasm;
+let account;
+let seed;
+let accountJson;
+let isConfirmTx = false;
+let txPayload;
 
 const initializeWasm = async () => {
   try {
@@ -26,8 +33,14 @@ const initializeWasm = async () => {
   }
 };
 
-let account;
-const ALEO_PRIVATE_KEY = "APrivateKey1zkp8cC4jgHEBnbtu3xxs1Ndja2EMizcvTRDq5Nikdkukg1p";
+function makeAccount(aleo_) {
+  if (!account) {
+    const hash = new SHA3(256);
+    hash.update(seed);
+    const buffer = hash.digest();
+    account = aleo_.Account.from_seed(buffer);
+  }
+}
 
 wallet.registerRpcMessageHandler(async (originString, requestObject) => {
   if (!wasm) {
@@ -35,25 +48,47 @@ wallet.registerRpcMessageHandler(async (originString, requestObject) => {
   }
 
   switch (requestObject.method) {
-    case 'hello':
-      return wallet.request({
+    case 'aleo_get_account':
+      seed = requestObject.params[0];
+      if (!seed) {
+        return ethErrors.rpc.invalidParams('Missing parameter: seed');
+      }
+
+      makeAccount(aleo, seed);
+      accountJson = {
+        address: account.to_address(),
+        view_key: account.to_view_key(),
+        to_private_key: account.to_private_key(), // TODO: Don't do this in production
+      };
+      return accountJson;
+
+    case 'aleo_send_transaction':
+      seed = requestObject.params[0];
+      if (!seed) {
+        return ethErrors.rpc.invalidParams('Missing parameter: seed');
+      }
+      txPayload = requestObject.params[1];
+      if (!txPayload) {
+        return ethErrors.rpc.invalidParams('Missing parameter: txPayload');
+      }
+
+      isConfirmTx = wallet.request({
         method: 'snap_confirm',
         params: [
           {
-            prompt: `Hello, ${originString}!`,
-            description:
-              'This custom confirmation is just for display purposes.',
-            textAreaContent:
-              'But you can edit the snap source code to make it do something, if you want to!',
+            prompt: `Confirm transaction: ${originString}`,
+            description: 'Are you sure you want to send this transaction?',
+            textAreaContent: JSON.stringify(txPayload, null, 2),
           },
         ],
       });
-    case 'aleo_get_account_address':
-      console.log({ wasm });
-      console.log({ aleo });
-      account = aleo.Account.from_private_key(ALEO_PRIVATE_KEY);
-      console.log({ account });
-      return account.to_address();
+
+      if (!isConfirmTx) {
+        return 'user rejected confirmation';
+      }
+
+      makeAccount(aleo, seed);
+      return 'not implemented';
     default:
       throw ethErrors.rpc.methodNotFound({ data: { request: requestObject } });
   }
