@@ -445,11 +445,6 @@ rimraf@^3.0.2:
   dependencies:
     glob "^7.1.3"
 
-rollup-wasm-pack-import@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/rollup-wasm-pack-import/-/rollup-wasm-pack-import-2.0.0.tgz#66ce74c3dff687731f9b1c3c424b11b4108b51f5"
-  integrity sha512-Egh0ygKmHXC7uWdsDXpATr2oBT20IduBUAyvkEbxFQLrB9GxgmwsFMfFW9JvmZjDHDQ+kJ2JcF/N+ZF4t5CWUQ==
-
 rollup@^2.67.2:
   version "2.67.2"
   resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.67.2.tgz#d95e15f60932ad21e05a870bd0aa0b235d056f04"

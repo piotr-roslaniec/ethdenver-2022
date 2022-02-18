@@ -8,8 +8,8 @@
   "private": true,
   "author": "Piotr Roslaniec <p.roslaniec@gmail.com>",
   "scripts": {
-    "preinstall": "cd ../aleo/wasm && wasm-pack build --target web",
-    "postinstall": "patch-package",
+    "preinstall": "#cd ../aleo/wasm && wasm-pack build --target web",
+    "postinstall": "#patch-package",
     "clean": "rimraf dist",
     "build": "rollup -c",
     "build:clean": "rimraf node_modules/aleo-wasm && yarn clean && yarn install --check-files && yarn build",
@@ -25,8 +25,7 @@
     "@rollup/plugin-wasm": "^5.1.2",
     "patch-package": "^6.4.7",
     "rimraf": "^3.0.2",
-    "rollup": "^2.67.2",
-    "rollup-wasm-pack-import": "^2.0.0"
+    "rollup": "^2.67.2"
   },
   "resolutions": {
     "glob-parent": "5.1.2"
