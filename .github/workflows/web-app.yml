@@ -36,11 +36,11 @@ jobs:
       - name: Install npm deps and build (with cache)
         uses: bahmutov/npm-install@v1
         with:
-          working-directory: web-app/${{ matrix.example }}
+          working-directory: web-app
 
       - name: Build web-app
         run: yarn run build
-        working-directory: web-app/${{ matrix.example }}
+        working-directory: web-app
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.0

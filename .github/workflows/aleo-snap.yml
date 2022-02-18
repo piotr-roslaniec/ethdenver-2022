@@ -32,15 +32,24 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
-
-      - name: Install npm deps and build (with cache)
+      
+      - name: Install aleo-wasm-bundler
         uses: bahmutov/npm-install@v1
         with:
-          working-directory: aleo-snap/${{ matrix.example }}
+          working-directory: aleo-wasm-bundler
+      
+      - name: Buid aleo-wasm-bundler
+        run: yarn build
+        working-directory: aleo-wasm-bundler
+        
+      - name: Install aleo-snap
+        uses: bahmutov/npm-install@v1
+        with:
+          working-directory: aleo-snap
 
       - name: Build aleo-snap
         run: yarn build && yarn build:website
-        working-directory: aleo-snap/${{ matrix.example }}
+        working-directory: aleo-snap
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v1.0
