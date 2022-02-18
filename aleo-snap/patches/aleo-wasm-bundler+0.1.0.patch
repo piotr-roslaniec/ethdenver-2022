@@ -1,19 +1,8 @@
 diff --git a/node_modules/aleo-wasm-bundler/dist/index.cjs.js b/node_modules/aleo-wasm-bundler/dist/index.cjs.js
-index 19bf29b..49a30f8 100644
+index 2a8b996..addd1e5 100644
 --- a/node_modules/aleo-wasm-bundler/dist/index.cjs.js
 +++ b/node_modules/aleo-wasm-bundler/dist/index.cjs.js
-@@ -15,10 +15,6 @@ function getAugmentedNamespace(n) {
- 	return a;
- }
- 
--var global$1 = (typeof global !== "undefined" ? global :
--  typeof self !== "undefined" ? self :
--  typeof window !== "undefined" ? window : {});
--
- let wasm;
- 
- // TextEncoder/TextDecoder polyfills for utf-8 - an implementation of TextEncoder/TextDecoder APIs
-@@ -896,40 +892,11 @@ class Transaction {
+@@ -892,40 +892,11 @@ class Transaction {
  }
  
  async function load(module, imports) {
@@ -56,16 +45,15 @@ index 19bf29b..49a30f8 100644
      const imports = {};
      imports.wbg = {};
      imports.wbg.__wbindgen_string_new = function(arg0, arg1) {
-@@ -1021,7 +988,7 @@ async function init(input) {
-         return addHeapObject(ret);
+@@ -964,6 +935,7 @@ async function init(input) {
+         getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
      }, arguments) };
-     imports.wbg.__wbg_global_e7669da72fd7f239 = function() { return handleError(function () {
--        var ret = global$1.global;
-+        var ret = global.global;
+     imports.wbg.__wbg_process_f2b73829dbd321da = function(arg0) {
++        console.log({arg0});
+         var ret = getObject(arg0).process;
          return addHeapObject(ret);
-     }, arguments) };
-     imports.wbg.__wbindgen_is_undefined = function(arg0) {
-@@ -1059,13 +1026,7 @@ async function init(input) {
+     };
+@@ -1055,13 +1027,7 @@ async function init(input) {
          return addHeapObject(ret);
      };
  
@@ -80,3 +68,2781 @@ index 19bf29b..49a30f8 100644
  
      wasm = instance.exports;
      init.__wbindgen_wasm_module = module;
+diff --git a/node_modules/aleo-wasm-bundler/dist/index.es.js b/node_modules/aleo-wasm-bundler/dist/index.es.js
+index 1cbdd95..c270612 100644
+--- a/node_modules/aleo-wasm-bundler/dist/index.es.js
++++ b/node_modules/aleo-wasm-bundler/dist/index.es.js
+@@ -13,6 +13,10 @@ function getAugmentedNamespace(n) {
+ 	return a;
+ }
+ 
++var global$1 = (typeof global !== "undefined" ? global :
++  typeof self !== "undefined" ? self :
++  typeof window !== "undefined" ? window : {});
++
+ let wasm;
+ 
+ // TextEncoder/TextDecoder polyfills for utf-8 - an implementation of TextEncoder/TextDecoder APIs
+@@ -1015,7 +1019,7 @@ async function init(input) {
+         return addHeapObject(ret);
+     }, arguments) };
+     imports.wbg.__wbg_global_e7669da72fd7f239 = function() { return handleError(function () {
+-        var ret = global.global;
++        var ret = global$1.global;
+         return addHeapObject(ret);
+     }, arguments) };
+     imports.wbg.__wbindgen_is_undefined = function(arg0) {
+diff --git a/node_modules/aleo-wasm-bundler/dist/index.js b/node_modules/aleo-wasm-bundler/dist/index.js
+index 752376e..384c8bf 100644
+--- a/node_modules/aleo-wasm-bundler/dist/index.js
++++ b/node_modules/aleo-wasm-bundler/dist/index.js
+@@ -1,12 +1,13 @@
+ (function (global, factory) {
+ 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+-	typeof define === 'function' && define.amd ? define(factory) :
+-	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.aleoWasmBundler = factory());
+-})(this, (function () { 'use strict';
++		typeof define === 'function' && define.amd ? define(factory) :
++			(global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.aleoWasmBundler = factory());
++})(this, (function () {
++	'use strict';
+ 
+ 	function getAugmentedNamespace(n) {
+ 		if (n.__esModule) return n;
+-		var a = Object.defineProperty({}, '__esModule', {value: true});
++		var a = Object.defineProperty({}, '__esModule', { value: true });
+ 		Object.keys(n).forEach(function (k) {
+ 			var d = Object.getOwnPropertyDescriptor(n, k);
+ 			Object.defineProperty(a, k, d.get ? d : {
+@@ -19,6 +20,10 @@
+ 		return a;
+ 	}
+ 
++	var global$1 = (typeof global !== "undefined" ? global :
++		typeof self !== "undefined" ? self :
++			typeof window !== "undefined" ? window : {});
++
+ 	let wasm;
+ 
+ 	// TextEncoder/TextDecoder polyfills for utf-8 - an implementation of TextEncoder/TextDecoder APIs
+@@ -42,81 +47,81 @@
+ 	}
+ 
+ 	TextEncoder.prototype.encode = function (string) {
+-	  var octets = [];
+-	  if (!string) {
+-	    return octets; 
+-	  }
+-	  var length = string.length;
+-	  var i = 0;
+-	  while (i < length) {
+-	    var codePoint = string.codePointAt(i);
+-	    var c = 0;
+-	    var bits = 0;
+-	    if (codePoint <= 0x0000007F) {
+-	      c = 0;
+-	      bits = 0x00;
+-	    } else if (codePoint <= 0x000007FF) {
+-	      c = 6;
+-	      bits = 0xC0;
+-	    } else if (codePoint <= 0x0000FFFF) {
+-	      c = 12;
+-	      bits = 0xE0;
+-	    } else if (codePoint <= 0x001FFFFF) {
+-	      c = 18;
+-	      bits = 0xF0;
+-	    }
+-	    octets.push(bits | (codePoint >> c));
+-	    c -= 6;
+-	    while (c >= 0) {
+-	      octets.push(0x80 | ((codePoint >> c) & 0x3F));
+-	      c -= 6;
+-	    }
+-	    i += codePoint >= 0x10000 ? 2 : 1;
+-	  }
+-	  return octets;
++		var octets = [];
++		if (!string) {
++			return octets;
++		}
++		var length = string.length;
++		var i = 0;
++		while (i < length) {
++			var codePoint = string.codePointAt(i);
++			var c = 0;
++			var bits = 0;
++			if (codePoint <= 0x0000007F) {
++				c = 0;
++				bits = 0x00;
++			} else if (codePoint <= 0x000007FF) {
++				c = 6;
++				bits = 0xC0;
++			} else if (codePoint <= 0x0000FFFF) {
++				c = 12;
++				bits = 0xE0;
++			} else if (codePoint <= 0x001FFFFF) {
++				c = 18;
++				bits = 0xF0;
++			}
++			octets.push(bits | (codePoint >> c));
++			c -= 6;
++			while (c >= 0) {
++				octets.push(0x80 | ((codePoint >> c) & 0x3F));
++				c -= 6;
++			}
++			i += codePoint >= 0x10000 ? 2 : 1;
++		}
++		return octets;
+ 	};
+ 
+ 	function TextDecoder() {
+ 	}
+ 
+ 	TextDecoder.prototype.decode = function (octets) {
+-	  var string = "";
+-	  if (!octets) {
+-	    return string; 
+-	  }
+-	  var i = 0;
+-	  while (i < octets.length) {
+-	    var octet = octets[i];
+-	    var bytesNeeded = 0;
+-	    var codePoint = 0;
+-	    if (octet <= 0x7F) {
+-	      bytesNeeded = 0;
+-	      codePoint = octet & 0xFF;
+-	    } else if (octet <= 0xDF) {
+-	      bytesNeeded = 1;
+-	      codePoint = octet & 0x1F;
+-	    } else if (octet <= 0xEF) {
+-	      bytesNeeded = 2;
+-	      codePoint = octet & 0x0F;
+-	    } else if (octet <= 0xF4) {
+-	      bytesNeeded = 3;
+-	      codePoint = octet & 0x07;
+-	    }
+-	    if (octets.length - i - bytesNeeded > 0) {
+-	      var k = 0;
+-	      while (k < bytesNeeded) {
+-	        octet = octets[i + k + 1];
+-	        codePoint = (codePoint << 6) | (octet & 0x3F);
+-	        k += 1;
+-	      }
+-	    } else {
+-	      codePoint = 0xFFFD;
+-	      bytesNeeded = octets.length - i;
+-	    }
+-	    string += String.fromCodePoint(codePoint);
+-	    i += bytesNeeded + 1;
+-	  }
+-	  return string
++		var string = "";
++		if (!octets) {
++			return string;
++		}
++		var i = 0;
++		while (i < octets.length) {
++			var octet = octets[i];
++			var bytesNeeded = 0;
++			var codePoint = 0;
++			if (octet <= 0x7F) {
++				bytesNeeded = 0;
++				codePoint = octet & 0xFF;
++			} else if (octet <= 0xDF) {
++				bytesNeeded = 1;
++				codePoint = octet & 0x1F;
++			} else if (octet <= 0xEF) {
++				bytesNeeded = 2;
++				codePoint = octet & 0x0F;
++			} else if (octet <= 0xF4) {
++				bytesNeeded = 3;
++				codePoint = octet & 0x07;
++			}
++			if (octets.length - i - bytesNeeded > 0) {
++				var k = 0;
++				while (k < bytesNeeded) {
++					octet = octets[i + k + 1];
++					codePoint = (codePoint << 6) | (octet & 0x3F);
++					k += 1;
++				}
++			} else {
++				codePoint = 0xFFFD;
++				bytesNeeded = octets.length - i;
++			}
++			string += String.fromCodePoint(codePoint);
++			i += bytesNeeded + 1;
++		}
++		return string
+ 	};
+ 
+ 	let cachedTextDecoder = new TextDecoder('utf-8', { ignoreBOM: true, fatal: true });
+@@ -125,14 +130,14 @@
+ 
+ 	let cachegetUint8Memory0 = null;
+ 	function getUint8Memory0() {
+-	    if (cachegetUint8Memory0 === null || cachegetUint8Memory0.buffer !== wasm.memory.buffer) {
+-	        cachegetUint8Memory0 = new Uint8Array(wasm.memory.buffer);
+-	    }
+-	    return cachegetUint8Memory0;
++		if (cachegetUint8Memory0 === null || cachegetUint8Memory0.buffer !== wasm.memory.buffer) {
++			cachegetUint8Memory0 = new Uint8Array(wasm.memory.buffer);
++		}
++		return cachegetUint8Memory0;
+ 	}
+ 
+ 	function getStringFromWasm0(ptr, len) {
+-	    return cachedTextDecoder.decode(getUint8Memory0().subarray(ptr, ptr + len));
++		return cachedTextDecoder.decode(getUint8Memory0().subarray(ptr, ptr + len));
+ 	}
+ 
+ 	const heap = new Array(32).fill(undefined);
+@@ -142,26 +147,34 @@
+ 	let heap_next = heap.length;
+ 
+ 	function addHeapObject(obj) {
+-	    if (heap_next === heap.length) heap.push(heap.length + 1);
+-	    const idx = heap_next;
+-	    heap_next = heap[idx];
+-
+-	    heap[idx] = obj;
+-	    return idx;
++		console.log(`addHeapObject`);
++		console.log({ obj });
++		console.log({ heap });
++		if (heap_next === heap.length) heap.push(heap.length + 1);
++		const idx = heap_next;
++		console.log({ idx });
++		heap_next = heap[idx];
++
++		heap[idx] = obj;
++		return idx;
+ 	}
+ 
+-	function getObject(idx) { return heap[idx]; }
++	function getObject(idx) {
++		console.log(`getObject(${idx})`);
++		return heap[idx];
++	}
+ 
+ 	function dropObject(idx) {
+-	    if (idx < 36) return;
+-	    heap[idx] = heap_next;
+-	    heap_next = idx;
++		if (idx < 36) return;
++		heap[idx] = heap_next;
++		heap_next = idx;
+ 	}
+ 
+ 	function takeObject(idx) {
+-	    const ret = getObject(idx);
+-	    dropObject(idx);
+-	    return ret;
++		console.log(`takeObject(${idx})`);
++		const ret = getObject(idx);
++		dropObject(idx);
++		return ret;
+ 	}
+ 
+ 	let WASM_VECTOR_LEN = 0;
+@@ -169,62 +182,62 @@
+ 	let cachedTextEncoder = new TextEncoder('utf-8');
+ 
+ 	const encodeString = (typeof cachedTextEncoder.encodeInto === 'function'
+-	    ? function (arg, view) {
+-	    return cachedTextEncoder.encodeInto(arg, view);
+-	}
+-	    : function (arg, view) {
+-	    const buf = cachedTextEncoder.encode(arg);
+-	    view.set(buf);
+-	    return {
+-	        read: arg.length,
+-	        written: buf.length
+-	    };
+-	});
++		? function (arg, view) {
++			return cachedTextEncoder.encodeInto(arg, view);
++		}
++		: function (arg, view) {
++			const buf = cachedTextEncoder.encode(arg);
++			view.set(buf);
++			return {
++				read: arg.length,
++				written: buf.length
++			};
++		});
+ 
+ 	function passStringToWasm0(arg, malloc, realloc) {
+ 
+-	    if (realloc === undefined) {
+-	        const buf = cachedTextEncoder.encode(arg);
+-	        const ptr = malloc(buf.length);
+-	        getUint8Memory0().subarray(ptr, ptr + buf.length).set(buf);
+-	        WASM_VECTOR_LEN = buf.length;
+-	        return ptr;
+-	    }
++		if (realloc === undefined) {
++			const buf = cachedTextEncoder.encode(arg);
++			const ptr = malloc(buf.length);
++			getUint8Memory0().subarray(ptr, ptr + buf.length).set(buf);
++			WASM_VECTOR_LEN = buf.length;
++			return ptr;
++		}
+ 
+-	    let len = arg.length;
+-	    let ptr = malloc(len);
++		let len = arg.length;
++		let ptr = malloc(len);
+ 
+-	    const mem = getUint8Memory0();
++		const mem = getUint8Memory0();
+ 
+-	    let offset = 0;
++		let offset = 0;
+ 
+-	    for (; offset < len; offset++) {
+-	        const code = arg.charCodeAt(offset);
+-	        if (code > 0x7F) break;
+-	        mem[ptr + offset] = code;
+-	    }
++		for (; offset < len; offset++) {
++			const code = arg.charCodeAt(offset);
++			if (code > 0x7F) break;
++			mem[ptr + offset] = code;
++		}
+ 
+-	    if (offset !== len) {
+-	        if (offset !== 0) {
+-	            arg = arg.slice(offset);
+-	        }
+-	        ptr = realloc(ptr, len, len = offset + arg.length * 3);
+-	        const view = getUint8Memory0().subarray(ptr + offset, ptr + len);
+-	        const ret = encodeString(arg, view);
++		if (offset !== len) {
++			if (offset !== 0) {
++				arg = arg.slice(offset);
++			}
++			ptr = realloc(ptr, len, len = offset + arg.length * 3);
++			const view = getUint8Memory0().subarray(ptr + offset, ptr + len);
++			const ret = encodeString(arg, view);
+ 
+-	        offset += ret.written;
+-	    }
++			offset += ret.written;
++		}
+ 
+-	    WASM_VECTOR_LEN = offset;
+-	    return ptr;
++		WASM_VECTOR_LEN = offset;
++		return ptr;
+ 	}
+ 
+ 	let cachegetInt32Memory0 = null;
+ 	function getInt32Memory0() {
+-	    if (cachegetInt32Memory0 === null || cachegetInt32Memory0.buffer !== wasm.memory.buffer) {
+-	        cachegetInt32Memory0 = new Int32Array(wasm.memory.buffer);
+-	    }
+-	    return cachegetInt32Memory0;
++		if (cachegetInt32Memory0 === null || cachegetInt32Memory0.buffer !== wasm.memory.buffer) {
++			cachegetInt32Memory0 = new Int32Array(wasm.memory.buffer);
++		}
++		return cachegetInt32Memory0;
+ 	}
+ 
+ 	const u32CvtShim = new Uint32Array(2);
+@@ -233,844 +246,912 @@
+ 
+ 	let cachegetUint32Memory0 = null;
+ 	function getUint32Memory0() {
+-	    if (cachegetUint32Memory0 === null || cachegetUint32Memory0.buffer !== wasm.memory.buffer) {
+-	        cachegetUint32Memory0 = new Uint32Array(wasm.memory.buffer);
+-	    }
+-	    return cachegetUint32Memory0;
++		if (cachegetUint32Memory0 === null || cachegetUint32Memory0.buffer !== wasm.memory.buffer) {
++			cachegetUint32Memory0 = new Uint32Array(wasm.memory.buffer);
++		}
++		return cachegetUint32Memory0;
+ 	}
+ 
+ 	function getArrayJsValueFromWasm0(ptr, len) {
+-	    const mem = getUint32Memory0();
+-	    const slice = mem.subarray(ptr / 4, ptr / 4 + len);
+-	    const result = [];
+-	    for (let i = 0; i < slice.length; i++) {
+-	        result.push(takeObject(slice[i]));
+-	    }
+-	    return result;
++		const mem = getUint32Memory0();
++		const slice = mem.subarray(ptr / 4, ptr / 4 + len);
++		const result = [];
++		for (let i = 0; i < slice.length; i++) {
++			result.push(takeObject(slice[i]));
++		}
++		return result;
+ 	}
+ 
+ 	function handleError(f, args) {
+-	    try {
+-	        return f.apply(this, args);
+-	    } catch (e) {
+-	        wasm.__wbindgen_exn_store(addHeapObject(e));
+-	    }
++		try {
++			return f.apply(this, args);
++		} catch (e) {
++			wasm.__wbindgen_exn_store(addHeapObject(e));
++		}
+ 	}
+ 
+ 	function getArrayU8FromWasm0(ptr, len) {
+-	    return getUint8Memory0().subarray(ptr / 1, ptr / 1 + len);
++		return getUint8Memory0().subarray(ptr / 1, ptr / 1 + len);
+ 	}
+ 	/**
+ 	*/
+ 	class Account {
+ 
+-	    static __wrap(ptr) {
+-	        const obj = Object.create(Account.prototype);
+-	        obj.ptr = ptr;
+-
+-	        return obj;
+-	    }
+-
+-	    __destroy_into_raw() {
+-	        const ptr = this.ptr;
+-	        this.ptr = 0;
+-
+-	        return ptr;
+-	    }
+-
+-	    free() {
+-	        const ptr = this.__destroy_into_raw();
+-	        wasm.__wbg_account_free(ptr);
+-	    }
+-	    /**
+-	    */
+-	    constructor() {
+-	        var ret = wasm.account_new();
+-	        return Account.__wrap(ret);
+-	    }
+-	    /**
+-	    * @param {string} private_key
+-	    * @returns {Account}
+-	    */
+-	    static from_private_key(private_key) {
+-	        var ptr0 = passStringToWasm0(private_key, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+-	        var len0 = WASM_VECTOR_LEN;
+-	        var ret = wasm.account_from_private_key(ptr0, len0);
+-	        return Account.__wrap(ret);
+-	    }
+-	    /**
+-	    * @returns {string}
+-	    */
+-	    to_private_key() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.account_to_private_key(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            return getStringFromWasm0(r0, r1);
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	            wasm.__wbindgen_free(r0, r1);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {string}
+-	    */
+-	    to_view_key() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.account_to_view_key(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            return getStringFromWasm0(r0, r1);
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	            wasm.__wbindgen_free(r0, r1);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {string}
+-	    */
+-	    to_address() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.account_to_address(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            return getStringFromWasm0(r0, r1);
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	            wasm.__wbindgen_free(r0, r1);
+-	        }
+-	    }
++		static __wrap(ptr) {
++			const obj = Object.create(Account.prototype);
++			obj.ptr = ptr;
++
++			return obj;
++		}
++
++		__destroy_into_raw() {
++			const ptr = this.ptr;
++			this.ptr = 0;
++
++			return ptr;
++		}
++
++		free() {
++			const ptr = this.__destroy_into_raw();
++			wasm.__wbg_account_free(ptr);
++		}
++		/**
++		*/
++		constructor() {
++			var ret = wasm.account_new();
++			console.log("constructor()")
++			console.log({ ret });
++			return Account.__wrap(ret);
++		}
++		/**
++		* @param {string} private_key
++		* @returns {Account}
++		*/
++		static from_private_key(private_key) {
++			var ptr0 = passStringToWasm0(private_key, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
++			var len0 = WASM_VECTOR_LEN;
++			var ret = wasm.account_from_private_key(ptr0, len0);
++			return Account.__wrap(ret);
++		}
++		/**
++		* @returns {string}
++		*/
++		to_private_key() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.account_to_private_key(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				return getStringFromWasm0(r0, r1);
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++				wasm.__wbindgen_free(r0, r1);
++			}
++		}
++		/**
++		* @returns {string}
++		*/
++		to_view_key() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.account_to_view_key(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				return getStringFromWasm0(r0, r1);
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++				wasm.__wbindgen_free(r0, r1);
++			}
++		}
++		/**
++		* @returns {string}
++		*/
++		to_address() {
++			try {
++				console.log("to_address()");
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.account_to_address(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				return getStringFromWasm0(r0, r1);
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++				wasm.__wbindgen_free(r0, r1);
++			}
++		}
+ 	}
+ 	/**
+ 	*/
+ 	class Ciphertext {
+ 
+-	    static __wrap(ptr) {
+-	        const obj = Object.create(Ciphertext.prototype);
+-	        obj.ptr = ptr;
+-
+-	        return obj;
+-	    }
+-
+-	    __destroy_into_raw() {
+-	        const ptr = this.ptr;
+-	        this.ptr = 0;
+-
+-	        return ptr;
+-	    }
+-
+-	    free() {
+-	        const ptr = this.__destroy_into_raw();
+-	        wasm.__wbg_ciphertext_free(ptr);
+-	    }
+-	    /**
+-	    * @param {string} ciphertext
+-	    * @returns {Ciphertext}
+-	    */
+-	    static from_string(ciphertext) {
+-	        var ptr0 = passStringToWasm0(ciphertext, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+-	        var len0 = WASM_VECTOR_LEN;
+-	        var ret = wasm.ciphertext_from_string(ptr0, len0);
+-	        return Ciphertext.__wrap(ret);
+-	    }
+-	    /**
+-	    * @param {string} account_view_key_string
+-	    * @returns {boolean}
+-	    */
+-	    is_owner(account_view_key_string) {
+-	        var ptr0 = passStringToWasm0(account_view_key_string, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+-	        var len0 = WASM_VECTOR_LEN;
+-	        var ret = wasm.ciphertext_is_owner(this.ptr, ptr0, len0);
+-	        return ret !== 0;
+-	    }
+-	    /**
+-	    * @param {string} decryption_key
+-	    * @returns {string}
+-	    */
+-	    to_plaintext(decryption_key) {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            var ptr0 = passStringToWasm0(decryption_key, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+-	            var len0 = WASM_VECTOR_LEN;
+-	            wasm.ciphertext_to_plaintext(retptr, this.ptr, ptr0, len0);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            var r2 = getInt32Memory0()[retptr / 4 + 2];
+-	            var r3 = getInt32Memory0()[retptr / 4 + 3];
+-	            var ptr1 = r0;
+-	            var len1 = r1;
+-	            if (r3) {
+-	                ptr1 = 0; len1 = 0;
+-	                throw takeObject(r2);
+-	            }
+-	            return getStringFromWasm0(ptr1, len1);
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	            wasm.__wbindgen_free(ptr1, len1);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {string}
+-	    */
+-	    to_string() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.ciphertext_to_string(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            return getStringFromWasm0(r0, r1);
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	            wasm.__wbindgen_free(r0, r1);
+-	        }
+-	    }
++		static __wrap(ptr) {
++			const obj = Object.create(Ciphertext.prototype);
++			obj.ptr = ptr;
++
++			return obj;
++		}
++
++		__destroy_into_raw() {
++			const ptr = this.ptr;
++			this.ptr = 0;
++
++			return ptr;
++		}
++
++		free() {
++			const ptr = this.__destroy_into_raw();
++			wasm.__wbg_ciphertext_free(ptr);
++		}
++		/**
++		* @param {string} ciphertext
++		* @returns {Ciphertext}
++		*/
++		static from_string(ciphertext) {
++			var ptr0 = passStringToWasm0(ciphertext, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
++			var len0 = WASM_VECTOR_LEN;
++			var ret = wasm.ciphertext_from_string(ptr0, len0);
++			return Ciphertext.__wrap(ret);
++		}
++		/**
++		* @param {string} account_view_key_string
++		* @returns {boolean}
++		*/
++		is_owner(account_view_key_string) {
++			var ptr0 = passStringToWasm0(account_view_key_string, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
++			var len0 = WASM_VECTOR_LEN;
++			var ret = wasm.ciphertext_is_owner(this.ptr, ptr0, len0);
++			return ret !== 0;
++		}
++		/**
++		* @param {string} decryption_key
++		* @returns {string}
++		*/
++		to_plaintext(decryption_key) {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				var ptr0 = passStringToWasm0(decryption_key, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
++				var len0 = WASM_VECTOR_LEN;
++				wasm.ciphertext_to_plaintext(retptr, this.ptr, ptr0, len0);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				var r2 = getInt32Memory0()[retptr / 4 + 2];
++				var r3 = getInt32Memory0()[retptr / 4 + 3];
++				var ptr1 = r0;
++				var len1 = r1;
++				if (r3) {
++					ptr1 = 0; len1 = 0;
++					throw takeObject(r2);
++				}
++				return getStringFromWasm0(ptr1, len1);
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++				wasm.__wbindgen_free(ptr1, len1);
++			}
++		}
++		/**
++		* @returns {string}
++		*/
++		to_string() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.ciphertext_to_string(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				return getStringFromWasm0(r0, r1);
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++				wasm.__wbindgen_free(r0, r1);
++			}
++		}
+ 	}
+ 	/**
+ 	*/
+ 	class Record {
+ 
+-	    static __wrap(ptr) {
+-	        const obj = Object.create(Record.prototype);
+-	        obj.ptr = ptr;
+-
+-	        return obj;
+-	    }
+-
+-	    __destroy_into_raw() {
+-	        const ptr = this.ptr;
+-	        this.ptr = 0;
+-
+-	        return ptr;
+-	    }
+-
+-	    free() {
+-	        const ptr = this.__destroy_into_raw();
+-	        wasm.__wbg_record_free(ptr);
+-	    }
+-	    /**
+-	    * @param {string} record
+-	    * @returns {Record}
+-	    */
+-	    static from_string(record) {
+-	        var ptr0 = passStringToWasm0(record, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+-	        var len0 = WASM_VECTOR_LEN;
+-	        var ret = wasm.record_from_string(ptr0, len0);
+-	        return Record.__wrap(ret);
+-	    }
+-	    /**
+-	    * @param {string} decryption_key
+-	    * @param {string} ciphertext
+-	    * @returns {Record}
+-	    */
+-	    static decrypt(decryption_key, ciphertext) {
+-	        var ptr0 = passStringToWasm0(decryption_key, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+-	        var len0 = WASM_VECTOR_LEN;
+-	        var ptr1 = passStringToWasm0(ciphertext, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+-	        var len1 = WASM_VECTOR_LEN;
+-	        var ret = wasm.record_decrypt(ptr0, len0, ptr1, len1);
+-	        return Record.__wrap(ret);
+-	    }
+-	    /**
+-	    * @returns {boolean}
+-	    */
+-	    is_dummy() {
+-	        var ret = wasm.record_is_dummy(this.ptr);
+-	        return ret !== 0;
+-	    }
+-	    /**
+-	    * @returns {string}
+-	    */
+-	    owner() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.record_owner(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            return getStringFromWasm0(r0, r1);
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	            wasm.__wbindgen_free(r0, r1);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {BigInt}
+-	    */
+-	    value() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.record_value(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            u32CvtShim[0] = r0;
+-	            u32CvtShim[1] = r1;
+-	            const n0 = int64CvtShim[0];
+-	            return n0;
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {string}
+-	    */
+-	    payload() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.record_payload(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            return getStringFromWasm0(r0, r1);
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	            wasm.__wbindgen_free(r0, r1);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {string}
+-	    */
+-	    program_id() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.record_program_id(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            return getStringFromWasm0(r0, r1);
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	            wasm.__wbindgen_free(r0, r1);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {string}
+-	    */
+-	    randomizer() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.record_randomizer(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            return getStringFromWasm0(r0, r1);
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	            wasm.__wbindgen_free(r0, r1);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {string}
+-	    */
+-	    record_view_key() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.record_record_view_key(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            return getStringFromWasm0(r0, r1);
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	            wasm.__wbindgen_free(r0, r1);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {string}
+-	    */
+-	    commitment() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.record_commitment(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            return getStringFromWasm0(r0, r1);
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	            wasm.__wbindgen_free(r0, r1);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {string}
+-	    */
+-	    ciphertext() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.record_ciphertext(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            return getStringFromWasm0(r0, r1);
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	            wasm.__wbindgen_free(r0, r1);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {string}
+-	    */
+-	    to_string() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.record_to_string(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            return getStringFromWasm0(r0, r1);
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	            wasm.__wbindgen_free(r0, r1);
+-	        }
+-	    }
++		static __wrap(ptr) {
++			const obj = Object.create(Record.prototype);
++			obj.ptr = ptr;
++
++			return obj;
++		}
++
++		__destroy_into_raw() {
++			const ptr = this.ptr;
++			this.ptr = 0;
++
++			return ptr;
++		}
++
++		free() {
++			const ptr = this.__destroy_into_raw();
++			wasm.__wbg_record_free(ptr);
++		}
++		/**
++		* @param {string} record
++		* @returns {Record}
++		*/
++		static from_string(record) {
++			var ptr0 = passStringToWasm0(record, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
++			var len0 = WASM_VECTOR_LEN;
++			var ret = wasm.record_from_string(ptr0, len0);
++			return Record.__wrap(ret);
++		}
++		/**
++		* @param {string} decryption_key
++		* @param {string} ciphertext
++		* @returns {Record}
++		*/
++		static decrypt(decryption_key, ciphertext) {
++			var ptr0 = passStringToWasm0(decryption_key, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
++			var len0 = WASM_VECTOR_LEN;
++			var ptr1 = passStringToWasm0(ciphertext, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
++			var len1 = WASM_VECTOR_LEN;
++			var ret = wasm.record_decrypt(ptr0, len0, ptr1, len1);
++			return Record.__wrap(ret);
++		}
++		/**
++		* @returns {boolean}
++		*/
++		is_dummy() {
++			var ret = wasm.record_is_dummy(this.ptr);
++			return ret !== 0;
++		}
++		/**
++		* @returns {string}
++		*/
++		owner() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.record_owner(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				return getStringFromWasm0(r0, r1);
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++				wasm.__wbindgen_free(r0, r1);
++			}
++		}
++		/**
++		* @returns {BigInt}
++		*/
++		value() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.record_value(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				u32CvtShim[0] = r0;
++				u32CvtShim[1] = r1;
++				const n0 = int64CvtShim[0];
++				return n0;
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++			}
++		}
++		/**
++		* @returns {string}
++		*/
++		payload() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.record_payload(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				return getStringFromWasm0(r0, r1);
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++				wasm.__wbindgen_free(r0, r1);
++			}
++		}
++		/**
++		* @returns {string}
++		*/
++		program_id() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.record_program_id(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				return getStringFromWasm0(r0, r1);
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++				wasm.__wbindgen_free(r0, r1);
++			}
++		}
++		/**
++		* @returns {string}
++		*/
++		randomizer() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.record_randomizer(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				return getStringFromWasm0(r0, r1);
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++				wasm.__wbindgen_free(r0, r1);
++			}
++		}
++		/**
++		* @returns {string}
++		*/
++		record_view_key() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.record_record_view_key(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				return getStringFromWasm0(r0, r1);
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++				wasm.__wbindgen_free(r0, r1);
++			}
++		}
++		/**
++		* @returns {string}
++		*/
++		commitment() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.record_commitment(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				return getStringFromWasm0(r0, r1);
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++				wasm.__wbindgen_free(r0, r1);
++			}
++		}
++		/**
++		* @returns {string}
++		*/
++		ciphertext() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.record_ciphertext(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				return getStringFromWasm0(r0, r1);
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++				wasm.__wbindgen_free(r0, r1);
++			}
++		}
++		/**
++		* @returns {string}
++		*/
++		to_string() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.record_to_string(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				return getStringFromWasm0(r0, r1);
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++				wasm.__wbindgen_free(r0, r1);
++			}
++		}
+ 	}
+ 	/**
+ 	*/
+ 	class Transaction {
+ 
+-	    static __wrap(ptr) {
+-	        const obj = Object.create(Transaction.prototype);
+-	        obj.ptr = ptr;
+-
+-	        return obj;
+-	    }
+-
+-	    __destroy_into_raw() {
+-	        const ptr = this.ptr;
+-	        this.ptr = 0;
+-
+-	        return ptr;
+-	    }
+-
+-	    free() {
+-	        const ptr = this.__destroy_into_raw();
+-	        wasm.__wbg_transaction_free(ptr);
+-	    }
+-	    /**
+-	    * @param {string} transaction
+-	    * @returns {Transaction}
+-	    */
+-	    static from_string(transaction) {
+-	        var ptr0 = passStringToWasm0(transaction, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+-	        var len0 = WASM_VECTOR_LEN;
+-	        var ret = wasm.transaction_from_string(ptr0, len0);
+-	        return Transaction.__wrap(ret);
+-	    }
+-	    /**
+-	    * @returns {string}
+-	    */
+-	    to_string() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.transaction_to_string(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            return getStringFromWasm0(r0, r1);
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	            wasm.__wbindgen_free(r0, r1);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {boolean}
+-	    */
+-	    is_valid() {
+-	        var ret = wasm.transaction_is_valid(this.ptr);
+-	        return ret !== 0;
+-	    }
+-	    /**
+-	    * @param {string} transition_id
+-	    * @returns {boolean}
+-	    */
+-	    contains_transition_id(transition_id) {
+-	        var ptr0 = passStringToWasm0(transition_id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+-	        var len0 = WASM_VECTOR_LEN;
+-	        var ret = wasm.transaction_contains_transition_id(this.ptr, ptr0, len0);
+-	        return ret !== 0;
+-	    }
+-	    /**
+-	    * @param {string} serial_number
+-	    * @returns {boolean}
+-	    */
+-	    contains_serial_number(serial_number) {
+-	        var ptr0 = passStringToWasm0(serial_number, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+-	        var len0 = WASM_VECTOR_LEN;
+-	        var ret = wasm.transaction_contains_serial_number(this.ptr, ptr0, len0);
+-	        return ret !== 0;
+-	    }
+-	    /**
+-	    * @param {string} commitment
+-	    * @returns {boolean}
+-	    */
+-	    contains_commitment(commitment) {
+-	        var ptr0 = passStringToWasm0(commitment, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+-	        var len0 = WASM_VECTOR_LEN;
+-	        var ret = wasm.transaction_contains_commitment(this.ptr, ptr0, len0);
+-	        return ret !== 0;
+-	    }
+-	    /**
+-	    * @returns {string}
+-	    */
+-	    transaction_id() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.transaction_transaction_id(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            return getStringFromWasm0(r0, r1);
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	            wasm.__wbindgen_free(r0, r1);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {string}
+-	    */
+-	    inner_circuit_id() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.transaction_inner_circuit_id(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            return getStringFromWasm0(r0, r1);
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	            wasm.__wbindgen_free(r0, r1);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {string}
+-	    */
+-	    ledger_root() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.transaction_ledger_root(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            return getStringFromWasm0(r0, r1);
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	            wasm.__wbindgen_free(r0, r1);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {any[]}
+-	    */
+-	    transition_ids() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.transaction_transition_ids(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            var v0 = getArrayJsValueFromWasm0(r0, r1).slice();
+-	            wasm.__wbindgen_free(r0, r1 * 4);
+-	            return v0;
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {any[]}
+-	    */
+-	    serial_numbers() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.transaction_serial_numbers(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            var v0 = getArrayJsValueFromWasm0(r0, r1).slice();
+-	            wasm.__wbindgen_free(r0, r1 * 4);
+-	            return v0;
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {any[]}
+-	    */
+-	    commitments() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.transaction_commitments(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            var v0 = getArrayJsValueFromWasm0(r0, r1).slice();
+-	            wasm.__wbindgen_free(r0, r1 * 4);
+-	            return v0;
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {any[]}
+-	    */
+-	    ciphertexts() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.transaction_ciphertexts(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            var v0 = getArrayJsValueFromWasm0(r0, r1).slice();
+-	            wasm.__wbindgen_free(r0, r1 * 4);
+-	            return v0;
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {string}
+-	    */
+-	    value_balance() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.transaction_value_balance(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            return getStringFromWasm0(r0, r1);
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	            wasm.__wbindgen_free(r0, r1);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {any[]}
+-	    */
+-	    events() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.transaction_events(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            var v0 = getArrayJsValueFromWasm0(r0, r1).slice();
+-	            wasm.__wbindgen_free(r0, r1 * 4);
+-	            return v0;
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {any[]}
+-	    */
+-	    transitions() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.transaction_transitions(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            var v0 = getArrayJsValueFromWasm0(r0, r1).slice();
+-	            wasm.__wbindgen_free(r0, r1 * 4);
+-	            return v0;
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	        }
+-	    }
+-	    /**
+-	    * @param {string} view_key_string
+-	    * @returns {any[]}
+-	    */
+-	    to_decrypted_records(view_key_string) {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            var ptr0 = passStringToWasm0(view_key_string, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+-	            var len0 = WASM_VECTOR_LEN;
+-	            wasm.transaction_to_decrypted_records(retptr, this.ptr, ptr0, len0);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            var v1 = getArrayJsValueFromWasm0(r0, r1).slice();
+-	            wasm.__wbindgen_free(r0, r1 * 4);
+-	            return v1;
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	        }
+-	    }
+-	    /**
+-	    * @returns {any[]}
+-	    */
+-	    to_records() {
+-	        try {
+-	            const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+-	            wasm.transaction_to_records(retptr, this.ptr);
+-	            var r0 = getInt32Memory0()[retptr / 4 + 0];
+-	            var r1 = getInt32Memory0()[retptr / 4 + 1];
+-	            var v0 = getArrayJsValueFromWasm0(r0, r1).slice();
+-	            wasm.__wbindgen_free(r0, r1 * 4);
+-	            return v0;
+-	        } finally {
+-	            wasm.__wbindgen_add_to_stack_pointer(16);
+-	        }
+-	    }
++		static __wrap(ptr) {
++			const obj = Object.create(Transaction.prototype);
++			obj.ptr = ptr;
++
++			return obj;
++		}
++
++		__destroy_into_raw() {
++			const ptr = this.ptr;
++			this.ptr = 0;
++
++			return ptr;
++		}
++
++		free() {
++			const ptr = this.__destroy_into_raw();
++			wasm.__wbg_transaction_free(ptr);
++		}
++		/**
++		* @param {string} transaction
++		* @returns {Transaction}
++		*/
++		static from_string(transaction) {
++			var ptr0 = passStringToWasm0(transaction, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
++			var len0 = WASM_VECTOR_LEN;
++			var ret = wasm.transaction_from_string(ptr0, len0);
++			return Transaction.__wrap(ret);
++		}
++		/**
++		* @returns {string}
++		*/
++		to_string() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.transaction_to_string(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				return getStringFromWasm0(r0, r1);
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++				wasm.__wbindgen_free(r0, r1);
++			}
++		}
++		/**
++		* @returns {boolean}
++		*/
++		is_valid() {
++			var ret = wasm.transaction_is_valid(this.ptr);
++			return ret !== 0;
++		}
++		/**
++		* @param {string} transition_id
++		* @returns {boolean}
++		*/
++		contains_transition_id(transition_id) {
++			var ptr0 = passStringToWasm0(transition_id, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
++			var len0 = WASM_VECTOR_LEN;
++			var ret = wasm.transaction_contains_transition_id(this.ptr, ptr0, len0);
++			return ret !== 0;
++		}
++		/**
++		* @param {string} serial_number
++		* @returns {boolean}
++		*/
++		contains_serial_number(serial_number) {
++			var ptr0 = passStringToWasm0(serial_number, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
++			var len0 = WASM_VECTOR_LEN;
++			var ret = wasm.transaction_contains_serial_number(this.ptr, ptr0, len0);
++			return ret !== 0;
++		}
++		/**
++		* @param {string} commitment
++		* @returns {boolean}
++		*/
++		contains_commitment(commitment) {
++			var ptr0 = passStringToWasm0(commitment, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
++			var len0 = WASM_VECTOR_LEN;
++			var ret = wasm.transaction_contains_commitment(this.ptr, ptr0, len0);
++			return ret !== 0;
++		}
++		/**
++		* @returns {string}
++		*/
++		transaction_id() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.transaction_transaction_id(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				return getStringFromWasm0(r0, r1);
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++				wasm.__wbindgen_free(r0, r1);
++			}
++		}
++		/**
++		* @returns {string}
++		*/
++		inner_circuit_id() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.transaction_inner_circuit_id(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				return getStringFromWasm0(r0, r1);
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++				wasm.__wbindgen_free(r0, r1);
++			}
++		}
++		/**
++		* @returns {string}
++		*/
++		ledger_root() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.transaction_ledger_root(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				return getStringFromWasm0(r0, r1);
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++				wasm.__wbindgen_free(r0, r1);
++			}
++		}
++		/**
++		* @returns {any[]}
++		*/
++		transition_ids() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.transaction_transition_ids(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				var v0 = getArrayJsValueFromWasm0(r0, r1).slice();
++				wasm.__wbindgen_free(r0, r1 * 4);
++				return v0;
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++			}
++		}
++		/**
++		* @returns {any[]}
++		*/
++		serial_numbers() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.transaction_serial_numbers(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				var v0 = getArrayJsValueFromWasm0(r0, r1).slice();
++				wasm.__wbindgen_free(r0, r1 * 4);
++				return v0;
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++			}
++		}
++		/**
++		* @returns {any[]}
++		*/
++		commitments() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.transaction_commitments(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				var v0 = getArrayJsValueFromWasm0(r0, r1).slice();
++				wasm.__wbindgen_free(r0, r1 * 4);
++				return v0;
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++			}
++		}
++		/**
++		* @returns {any[]}
++		*/
++		ciphertexts() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.transaction_ciphertexts(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				var v0 = getArrayJsValueFromWasm0(r0, r1).slice();
++				wasm.__wbindgen_free(r0, r1 * 4);
++				return v0;
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++			}
++		}
++		/**
++		* @returns {string}
++		*/
++		value_balance() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.transaction_value_balance(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				return getStringFromWasm0(r0, r1);
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++				wasm.__wbindgen_free(r0, r1);
++			}
++		}
++		/**
++		* @returns {any[]}
++		*/
++		events() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.transaction_events(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				var v0 = getArrayJsValueFromWasm0(r0, r1).slice();
++				wasm.__wbindgen_free(r0, r1 * 4);
++				return v0;
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++			}
++		}
++		/**
++		* @returns {any[]}
++		*/
++		transitions() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.transaction_transitions(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				var v0 = getArrayJsValueFromWasm0(r0, r1).slice();
++				wasm.__wbindgen_free(r0, r1 * 4);
++				return v0;
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++			}
++		}
++		/**
++		* @param {string} view_key_string
++		* @returns {any[]}
++		*/
++		to_decrypted_records(view_key_string) {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				var ptr0 = passStringToWasm0(view_key_string, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
++				var len0 = WASM_VECTOR_LEN;
++				wasm.transaction_to_decrypted_records(retptr, this.ptr, ptr0, len0);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				var v1 = getArrayJsValueFromWasm0(r0, r1).slice();
++				wasm.__wbindgen_free(r0, r1 * 4);
++				return v1;
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++			}
++		}
++		/**
++		* @returns {any[]}
++		*/
++		to_records() {
++			try {
++				const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
++				wasm.transaction_to_records(retptr, this.ptr);
++				var r0 = getInt32Memory0()[retptr / 4 + 0];
++				var r1 = getInt32Memory0()[retptr / 4 + 1];
++				var v0 = getArrayJsValueFromWasm0(r0, r1).slice();
++				wasm.__wbindgen_free(r0, r1 * 4);
++				return v0;
++			} finally {
++				wasm.__wbindgen_add_to_stack_pointer(16);
++			}
++		}
+ 	}
+ 
+ 	async function load(module, imports) {
+-	    if (typeof Response === 'function' && module instanceof Response) {
+-	        if (typeof WebAssembly.instantiateStreaming === 'function') {
+-	            try {
+-	                return await WebAssembly.instantiateStreaming(module, imports);
+-
+-	            } catch (e) {
+-	                if (module.headers.get('Content-Type') != 'application/wasm') {
+-	                    console.warn("`WebAssembly.instantiateStreaming` failed because your server does not serve wasm with `application/wasm` MIME type. Falling back to `WebAssembly.instantiate` which is slower. Original error:\n", e);
+-
+-	                } else {
+-	                    throw e;
+-	                }
+-	            }
+-	        }
+-
+-	        const bytes = await module.arrayBuffer();
+-	        return await WebAssembly.instantiate(bytes, imports);
+-
+-	    } else {
+-	        const instance = await WebAssembly.instantiate(module, imports);
+-
+-	        if (instance instanceof WebAssembly.Instance) {
+-	            return { instance, module };
+-
+-	        } else {
+-	            return instance;
+-	        }
+-	    }
++		if (typeof Response === 'function' && module instanceof Response) {
++			if (typeof WebAssembly.instantiateStreaming === 'function') {
++				try {
++					return await WebAssembly.instantiateStreaming(module, imports);
++
++				} catch (e) {
++					if (module.headers.get('Content-Type') != 'application/wasm') {
++						console.warn("`WebAssembly.instantiateStreaming` failed because your server does not serve wasm with `application/wasm` MIME type. Falling back to `WebAssembly.instantiate` which is slower. Original error:\n", e);
++
++					} else {
++						throw e;
++					}
++				}
++			}
++
++			const bytes = await module.arrayBuffer();
++			return await WebAssembly.instantiate(bytes, imports);
++
++		} else {
++			const instance = await WebAssembly.instantiate(module, imports);
++
++			if (instance instanceof WebAssembly.Instance) {
++				return { instance, module };
++
++			} else {
++				return instance;
++			}
++		}
+ 	}
+ 
+ 	async function init(input) {
+-	    if (typeof input === 'undefined') {
+-	        input = new URL('aleo_wasm_bg.wasm', (typeof document === 'undefined' && typeof location === 'undefined' ? new (require('u' + 'rl').URL)('file:' + __filename).href : typeof document === 'undefined' ? location.href : (document.currentScript && document.currentScript.src || new URL('index.js', document.baseURI).href)));
+-	    }
+-	    const imports = {};
+-	    imports.wbg = {};
+-	    imports.wbg.__wbindgen_string_new = function(arg0, arg1) {
+-	        var ret = getStringFromWasm0(arg0, arg1);
+-	        return addHeapObject(ret);
+-	    };
+-	    imports.wbg.__wbindgen_object_drop_ref = function(arg0) {
+-	        takeObject(arg0);
+-	    };
+-	    imports.wbg.__wbg_new_693216e109162396 = function() {
+-	        var ret = new Error();
+-	        return addHeapObject(ret);
+-	    };
+-	    imports.wbg.__wbg_stack_0ddaca5d1abfb52f = function(arg0, arg1) {
+-	        var ret = getObject(arg1).stack;
+-	        var ptr0 = passStringToWasm0(ret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+-	        var len0 = WASM_VECTOR_LEN;
+-	        getInt32Memory0()[arg0 / 4 + 1] = len0;
+-	        getInt32Memory0()[arg0 / 4 + 0] = ptr0;
+-	    };
+-	    imports.wbg.__wbg_error_09919627ac0992f5 = function(arg0, arg1) {
+-	        try {
+-	            console.error(getStringFromWasm0(arg0, arg1));
+-	        } finally {
+-	            wasm.__wbindgen_free(arg0, arg1);
+-	        }
+-	    };
+-	    imports.wbg.__wbindgen_object_clone_ref = function(arg0) {
+-	        var ret = getObject(arg0);
+-	        return addHeapObject(ret);
+-	    };
+-	    imports.wbg.__wbg_getRandomValues_3e46aa268da0fed1 = function() { return handleError(function (arg0, arg1) {
+-	        getObject(arg0).getRandomValues(getObject(arg1));
+-	    }, arguments) };
+-	    imports.wbg.__wbg_randomFillSync_59fcc2add91fe7b3 = function() { return handleError(function (arg0, arg1, arg2) {
+-	        getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
+-	    }, arguments) };
+-	    imports.wbg.__wbg_process_f2b73829dbd321da = function(arg0) {
+-	        var ret = getObject(arg0).process;
+-	        return addHeapObject(ret);
+-	    };
+-	    imports.wbg.__wbindgen_is_object = function(arg0) {
+-	        const val = getObject(arg0);
+-	        var ret = typeof(val) === 'object' && val !== null;
+-	        return ret;
+-	    };
+-	    imports.wbg.__wbg_versions_cd82f79c98672a9f = function(arg0) {
+-	        var ret = getObject(arg0).versions;
+-	        return addHeapObject(ret);
+-	    };
+-	    imports.wbg.__wbg_node_ee3f6da4130bd35f = function(arg0) {
+-	        var ret = getObject(arg0).node;
+-	        return addHeapObject(ret);
+-	    };
+-	    imports.wbg.__wbindgen_is_string = function(arg0) {
+-	        var ret = typeof(getObject(arg0)) === 'string';
+-	        return ret;
+-	    };
+-	    imports.wbg.__wbg_modulerequire_0a83c0c31d12d2c7 = function() { return handleError(function (arg0, arg1) {
+-	        var ret = module.require(getStringFromWasm0(arg0, arg1));
+-	        return addHeapObject(ret);
+-	    }, arguments) };
+-	    imports.wbg.__wbg_crypto_9e3521ed42436d35 = function(arg0) {
+-	        var ret = getObject(arg0).crypto;
+-	        return addHeapObject(ret);
+-	    };
+-	    imports.wbg.__wbg_msCrypto_c429c3f8f7a70bb5 = function(arg0) {
+-	        var ret = getObject(arg0).msCrypto;
+-	        return addHeapObject(ret);
+-	    };
+-	    imports.wbg.__wbg_newnoargs_f579424187aa1717 = function(arg0, arg1) {
+-	        var ret = new Function(getStringFromWasm0(arg0, arg1));
+-	        return addHeapObject(ret);
+-	    };
+-	    imports.wbg.__wbg_call_89558c3e96703ca1 = function() { return handleError(function (arg0, arg1) {
+-	        var ret = getObject(arg0).call(getObject(arg1));
+-	        return addHeapObject(ret);
+-	    }, arguments) };
+-	    imports.wbg.__wbg_self_e23d74ae45fb17d1 = function() { return handleError(function () {
+-	        var ret = self.self;
+-	        return addHeapObject(ret);
+-	    }, arguments) };
+-	    imports.wbg.__wbg_window_b4be7f48b24ac56e = function() { return handleError(function () {
+-	        var ret = window.window;
+-	        return addHeapObject(ret);
+-	    }, arguments) };
+-	    imports.wbg.__wbg_globalThis_d61b1f48a57191ae = function() { return handleError(function () {
+-	        var ret = globalThis.globalThis;
+-	        return addHeapObject(ret);
+-	    }, arguments) };
+-	    imports.wbg.__wbg_global_e7669da72fd7f239 = function() { return handleError(function () {
+-	        var ret = global.global;
+-	        return addHeapObject(ret);
+-	    }, arguments) };
+-	    imports.wbg.__wbindgen_is_undefined = function(arg0) {
+-	        var ret = getObject(arg0) === undefined;
+-	        return ret;
+-	    };
+-	    imports.wbg.__wbg_buffer_5e74a88a1424a2e0 = function(arg0) {
+-	        var ret = getObject(arg0).buffer;
+-	        return addHeapObject(ret);
+-	    };
+-	    imports.wbg.__wbg_new_e3b800e570795b3c = function(arg0) {
+-	        var ret = new Uint8Array(getObject(arg0));
+-	        return addHeapObject(ret);
+-	    };
+-	    imports.wbg.__wbg_set_5b8081e9d002f0df = function(arg0, arg1, arg2) {
+-	        getObject(arg0).set(getObject(arg1), arg2 >>> 0);
+-	    };
+-	    imports.wbg.__wbg_length_30803400a8f15c59 = function(arg0) {
+-	        var ret = getObject(arg0).length;
+-	        return ret;
+-	    };
+-	    imports.wbg.__wbg_newwithlength_5f4ce114a24dfe1e = function(arg0) {
+-	        var ret = new Uint8Array(arg0 >>> 0);
+-	        return addHeapObject(ret);
+-	    };
+-	    imports.wbg.__wbg_subarray_a68f835ca2af506f = function(arg0, arg1, arg2) {
+-	        var ret = getObject(arg0).subarray(arg1 >>> 0, arg2 >>> 0);
+-	        return addHeapObject(ret);
+-	    };
+-	    imports.wbg.__wbindgen_throw = function(arg0, arg1) {
+-	        throw new Error(getStringFromWasm0(arg0, arg1));
+-	    };
+-	    imports.wbg.__wbindgen_memory = function() {
+-	        var ret = wasm.memory;
+-	        return addHeapObject(ret);
+-	    };
+-
+-	    if (typeof input === 'string' || (typeof Request === 'function' && input instanceof Request) || (typeof URL === 'function' && input instanceof URL)) {
+-	        input = fetch(input);
+-	    }
+-
+-
+-
+-	    const { instance, module } = await load(await input, imports);
+-
+-	    wasm = instance.exports;
+-	    init.__wbindgen_wasm_module = module;
+-
+-	    return wasm;
++		const imports = {};
++		imports.wbg = {};
++		imports.wbg.__wbindgen_string_new = function (arg0, arg1) {
++			console.log("__wbindgen_string_new");
++			console.log({ arg0, arg1 });
++			var ret = getStringFromWasm0(arg0, arg1);
++			return addHeapObject(ret);
++		};
++		imports.wbg.__wbindgen_object_drop_ref = function (arg0) {
++			console.log(`__wbindgen_object_drop_ref`);
++			console.log({ arg0 });
++			takeObject(arg0);
++		};
++		imports.wbg.__wbg_new_693216e109162396 = function () {
++			console.log("__wbg_new_693216e109162396");
++			var ret = new Error();
++			return addHeapObject(ret);
++		};
++		imports.wbg.__wbg_stack_0ddaca5d1abfb52f = function (arg0, arg1) {
++			console.log("__wbg_stack_0ddaca5d1abfb52f");
++			console.log({ arg0, arg1 });
++			var ret = getObject(arg1).stack;
++			var ptr0 = passStringToWasm0(ret, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
++			var len0 = WASM_VECTOR_LEN;
++			getInt32Memory0()[arg0 / 4 + 1] = len0;
++			getInt32Memory0()[arg0 / 4 + 0] = ptr0;
++		};
++		imports.wbg.__wbg_error_09919627ac0992f5 = function (arg0, arg1) {
++			console.log("__wbg_error_09919627ac0992f5");
++			console.log({ arg0, arg1 });
++			try {
++				console.error(getStringFromWasm0(arg0, arg1));
++			} finally {
++				wasm.__wbindgen_free(arg0, arg1);
++			}
++		};
++		imports.wbg.__wbindgen_object_clone_ref = function (arg0) {
++			// Here
++			console.log("__wbindgen_object_clone_ref");
++			console.log({ arg0 });
++			var ret = getObject(arg0);
++			console.log({ ret });
++			return addHeapObject(ret);
++		};
++		imports.wbg.__wbg_getRandomValues_3e46aa268da0fed1 = function () {
++			console.log("__wbg_getRandomValues_3e46aa268da0fed1");
++			return handleError(function (arg0, arg1) {
++				getObject(arg0).getRandomValues(getObject(arg1));
++			}, arguments)
++		};
++		imports.wbg.__wbg_randomFillSync_59fcc2add91fe7b3 = function () {
++			console.log("__wbg_randomFillSync_59fcc2add91fe7b3");
++			return handleError(function (arg0, arg1, arg2) {
++				getObject(arg0).randomFillSync(getArrayU8FromWasm0(arg1, arg2));
++			}, arguments)
++		};
++		imports.wbg.__wbg_process_f2b73829dbd321da = function (arg0) {
++			console.log("__wbg_process_f2b73829dbd321da");
++			console.log({ arg0 })
++			console.log({ object_arg0: getObject(arg0) })
++			var ret = getObject(arg0).process;
++			return addHeapObject(ret);
++		};
++		imports.wbg.__wbindgen_is_object = function (arg0) {
++			console.log("__wbindgen_is_object");
++			console.log({ arg0 });
++			const val = getObject(arg0);
++			var ret = typeof (val) === 'object' && val !== null;
++			return ret;
++		};
++		imports.wbg.__wbg_versions_cd82f79c98672a9f = function (arg0) {
++			console.log("__wbg_versions_cd82f79c98672a9f");
++			console.log({ arg0 });
++			var ret = getObject(arg0).versions;
++			return addHeapObject(ret);
++		};
++		imports.wbg.__wbg_node_ee3f6da4130bd35f = function (arg0) {
++			console.log("__wbg_node_ee3f6da4130bd35f");
++			console.log({ arg0 });
++			var ret = getObject(arg0).node;
++			return addHeapObject(ret);
++		};
++		imports.wbg.__wbindgen_is_string = function (arg0) {
++			console.log("__wbindgen_is_string");
++			console.log({ arg0 });
++			var ret = typeof (getObject(arg0)) === 'string';
++			return ret;
++		};
++		imports.wbg.__wbg_modulerequire_0a83c0c31d12d2c7 = function () {
++			console.log("__wbg_modulerequire_0a83c0c31d12d2c7");
++			return handleError(function (arg0, arg1) {
++				var ret = module.require(getStringFromWasm0(arg0, arg1));
++				return addHeapObject(ret);
++			}, arguments)
++		};
++		imports.wbg.__wbg_crypto_9e3521ed42436d35 = function (arg0) {
++			console.log("__wbg_crypto_9e3521ed42436d35");
++			console.log({ arg0 });
++			var ret = getObject(arg0).crypto;
++			return addHeapObject(ret);
++		};
++		imports.wbg.__wbg_msCrypto_c429c3f8f7a70bb5 = function (arg0) {
++			console.log("__wbg_msCrypto_c429c3f8f7a70bb5");
++			console.log({ arg0 });
++			var ret = getObject(arg0).msCrypto;
++			return addHeapObject(ret);
++		};
++		imports.wbg.__wbg_newnoargs_f579424187aa1717 = function (arg0, arg1) {
++			console.log("__wbg_newnoargs_f579424187aa1717");
++			console.log({ arg0, arg1 });
++			var ret = new Function(getStringFromWasm0(arg0, arg1));
++			return addHeapObject(ret);
++		};
++		imports.wbg.__wbg_call_89558c3e96703ca1 = function () {
++			console.log("__wbg_call_89558c3e96703ca1");
++			return handleError(function (arg0, arg1) {
++				var ret = getObject(arg0).call(getObject(arg1));
++				return addHeapObject(ret);
++			}, arguments)
++		};
++		imports.wbg.__wbg_self_e23d74ae45fb17d1 = function () {
++			console.log("__wbg_self_e23d74ae45fb17d1");
++			return handleError(function () {
++				var ret = self.self;
++				return addHeapObject(ret);
++			}, arguments)
++		};
++		imports.wbg.__wbg_window_b4be7f48b24ac56e = function () {
++			console.log("__wbg_window_b4be7f48b24ac56e");
++			return handleError(function () {
++				var ret = window.window;
++				return addHeapObject(ret);
++			}, arguments)
++		};
++		imports.wbg.__wbg_globalThis_d61b1f48a57191ae = function () {
++			console.log("__wbg_globalThis_d61b1f48a57191ae");
++			return handleError(function () {
++				var ret = globalThis.globalThis;
++				return addHeapObject(ret);
++			}, arguments)
++		};
++		imports.wbg.__wbg_global_e7669da72fd7f239 = function () {
++			console.log("__wbg_global_e7669da72fd7f239");
++			return handleError(function () {
++				var ret = global$1.global;
++				return addHeapObject(ret);
++			}, arguments)
++		};
++		imports.wbg.__wbindgen_is_undefined = function (arg0) {
++			console.log("__wbindgen_is_undefined");
++			console.log({ arg0 });
++			var ret = getObject(arg0) === undefined;
++			return ret;
++		};
++		imports.wbg.__wbg_buffer_5e74a88a1424a2e0 = function (arg0) {
++			console.log("__wbg_buffer_5e74a88a1424a2e0");
++			console.log({ arg0 });
++			var ret = getObject(arg0).buffer;
++			return addHeapObject(ret);
++		};
++		imports.wbg.__wbg_new_e3b800e570795b3c = function (arg0) {
++			console.log("__wbg_new_e3b800e570795b3c");
++			console.log({ arg0 });
++			var ret = new Uint8Array(getObject(arg0));
++			return addHeapObject(ret);
++		};
++		imports.wbg.__wbg_set_5b8081e9d002f0df = function (arg0, arg1, arg2) {
++			console.log("__wbg_set_5b8081e9d002f0df");
++			console.log({ arg0, arg1, arg2 });
++			getObject(arg0).set(getObject(arg1), arg2 >>> 0);
++		};
++		imports.wbg.__wbg_length_30803400a8f15c59 = function (arg0) {
++			console.log("__wbg_length_30803400a8f15c59");
++			console.log({ arg0 });
++			var ret = getObject(arg0).length;
++			return ret;
++		};
++		imports.wbg.__wbg_newwithlength_5f4ce114a24dfe1e = function (arg0) {
++			console.log("__wbg_newwithlength_5f4ce114a24dfe1e");
++			console.log({ arg0 });
++			var ret = new Uint8Array(arg0 >>> 0);
++			return addHeapObject(ret);
++		};
++		imports.wbg.__wbg_subarray_a68f835ca2af506f = function (arg0, arg1, arg2) {
++			console.log("__wbg_subarray_a68f835ca2af506f");
++			console.log({ arg0, arg1, arg2 });
++			var ret = getObject(arg0).subarray(arg1 >>> 0, arg2 >>> 0);
++			return addHeapObject(ret);
++		};
++		imports.wbg.__wbindgen_throw = function (arg0, arg1) {
++			console.log("__wbindgen_throw");
++			console.log({ arg0, arg1 });
++			throw new Error(getStringFromWasm0(arg0, arg1));
++		};
++		imports.wbg.__wbindgen_memory = function () {
++			console.log("__wbindgen_memory");
++			var ret = wasm.memory;
++			return addHeapObject(ret);
++		};
++
++
++		const { instance, module } = await load(input, imports);
++
++		wasm = instance.exports;
++		init.__wbindgen_wasm_module = module;
++
++		console.log("wasm loaded");
++
++		return wasm;
+ 	}
+ 
+ 	var aleo_wasm = /*#__PURE__*/Object.freeze({
+diff --git a/node_modules/aleo-wasm-bundler/rollup.config.js b/node_modules/aleo-wasm-bundler/rollup.config.js
+index 920deea..fb575d5 100644
+--- a/node_modules/aleo-wasm-bundler/rollup.config.js
++++ b/node_modules/aleo-wasm-bundler/rollup.config.js
+@@ -1,6 +1,7 @@
+ import resolve from '@rollup/plugin-node-resolve';
+ import commonjs from '@rollup/plugin-commonjs';
+ import wasmImport from 'rollup-wasm-pack-import';
++import nodePolyfills from 'rollup-plugin-node-polyfills';
+ 
+ import pkg from './package.json';
+ 
+@@ -16,6 +17,7 @@ const plugins = [
+             'aleo-wasm': 'aleo_wasm_bg.wasm'
+         }
+     }),
++    nodePolyfills()
+ ]
+ 
+ export default [
+diff --git a/node_modules/aleo-wasm-bundler/yarn-error.log b/node_modules/aleo-wasm-bundler/yarn-error.log
+new file mode 100644
+index 0000000..3f79ee7
+--- /dev/null
++++ b/node_modules/aleo-wasm-bundler/yarn-error.log
+@@ -0,0 +1,591 @@
++Arguments: 
++  /home/piotr/.nvm/versions/node/v14.18.0/bin/node /home/piotr/.yarn/bin/yarn.js add -D rollup-plugin-node-polyfills
++
++PATH: 
++  /home/piotr/.yarn/bin:/home/piotr/.config/yarn/global/node_modules/.bin:/home/piotr/.fly/bin:/home/piotr/.nvm/versions/node/v14.18.0/bin:/home/piotr/.cargo/bin:/home/piotr/.local/bin:/home/piotr/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin:/home/piotr/.local/bin:/home/piotr/bin:/home/piotr/.npm-packages/bin:/home/piotr/Android/Sdk/emulator:/home/piotr/Android/Sdk/tools:/home/piotr/Android/Sdk/tools/bin:/home/piotr/Android/Sdk/platform-tools:/home/piotr/go/bin:/opt/edgelessrt/bin:/home/piotr/bin
++
++Yarn version: 
++  1.22.17
++
++Node version: 
++  14.18.0
++
++Platform: 
++  linux x64
++
++Trace: 
++  SyntaxError: /home/piotr/Documents/projects/hackathons/ethdenver-2022/aleo-wasm-bundler/package.json: Unexpected token / in JSON at position 293
++      at JSON.parse (<anonymous>)
++      at /home/piotr/.yarn/lib/cli.js:1625:59
++      at Generator.next (<anonymous>)
++      at step (/home/piotr/.yarn/lib/cli.js:310:30)
++      at /home/piotr/.yarn/lib/cli.js:321:13
++
++npm manifest: 
++  {
++    "name": "aleo-wasm-bundler",
++    "version": "0.1.0",
++    "description": "A webpack bundler for aleo-wasm",
++    "main": "dist/index.cjs.js",
++    "module": "dist/index.es.js",
++    "browser": "dist/index.js",
++    "private": true,
++    "author": "Piotr Roslaniec <p.roslaniec@gmail.com>",
++    "scripts": {
++      // "preinstall": "cd ../aleo/wasm && wasm-pack build --target web",
++      "postinstall": "patch-package",
++      "clean": "rimraf dist",
++      "build": "rollup -c",
++      "build:clean": "rimraf node_modules/aleo-wasm && yarn clean && yarn install --check-files && yarn build",
++      "patch-package": "patch-package --exclude 'nothing' aleo-wasm"
++    },
++    "license": "GPL-3.0-only",
++    "dependencies": {
++      "aleo-wasm": "file:../aleo/wasm/pkg"
++    },
++    "devDependencies": {
++      "@rollup/plugin-commonjs": "^21.0.1",
++      "@rollup/plugin-node-resolve": "^13.1.3",
++      "@rollup/plugin-wasm": "^5.1.2",
++      "patch-package": "^6.4.7",
++      "rimraf": "^3.0.2",
++      "rollup": "^2.67.2",
++      "rollup-wasm-pack-import": "^2.0.0"
++    },
++    "resolutions": {
++      "glob-parent": "5.1.2"
++    }
++  }
++
++yarn manifest: 
++  No manifest
++
++Lockfile: 
++  # THIS IS AN AUTOGENERATED FILE. DO NOT EDIT THIS FILE DIRECTLY.
++  # yarn lockfile v1
++  
++  
++  "@rollup/plugin-commonjs@^21.0.1":
++    version "21.0.1"
++    resolved "https://registry.yarnpkg.com/@rollup/plugin-commonjs/-/plugin-commonjs-21.0.1.tgz#1e57c81ae1518e4df0954d681c642e7d94588fee"
++    integrity sha512-EA+g22lbNJ8p5kuZJUYyhhDK7WgJckW5g4pNN7n4mAFUM96VuwUnNT3xr2Db2iCZPI1pJPbGyfT5mS9T1dHfMg==
++    dependencies:
++      "@rollup/pluginutils" "^3.1.0"
++      commondir "^1.0.1"
++      estree-walker "^2.0.1"
++      glob "^7.1.6"
++      is-reference "^1.2.1"
++      magic-string "^0.25.7"
++      resolve "^1.17.0"
++  
++  "@rollup/plugin-node-resolve@^13.1.3":
++    version "13.1.3"
++    resolved "https://registry.yarnpkg.com/@rollup/plugin-node-resolve/-/plugin-node-resolve-13.1.3.tgz#2ed277fb3ad98745424c1d2ba152484508a92d79"
++    integrity sha512-BdxNk+LtmElRo5d06MGY4zoepyrXX1tkzX2hrnPEZ53k78GuOMWLqmJDGIIOPwVRIFZrLQOo+Yr6KtCuLIA0AQ==
++    dependencies:
++      "@rollup/pluginutils" "^3.1.0"
++      "@types/resolve" "1.17.1"
++      builtin-modules "^3.1.0"
++      deepmerge "^4.2.2"
++      is-module "^1.0.0"
++      resolve "^1.19.0"
++  
++  "@rollup/plugin-wasm@^5.1.2":
++    version "5.1.2"
++    resolved "https://registry.yarnpkg.com/@rollup/plugin-wasm/-/plugin-wasm-5.1.2.tgz#5ebd767a14eb7cc98f45aee817e3efbe15c944d8"
++    integrity sha512-eiOuMHBNY0EGTq3LCebg4IQ6/SOvKjmGetzqKajJWcbDQkrQZvHihZKKnBJYY7NuuvjNqCLdEViYr5aAZms63g==
++  
++  "@rollup/pluginutils@^3.1.0":
++    version "3.1.0"
++    resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-3.1.0.tgz#706b4524ee6dc8b103b3c995533e5ad680c02b9b"
++    integrity sha512-GksZ6pr6TpIjHm8h9lSQ8pi8BE9VeubNT0OMJ3B5uZJ8pz73NPiqOtCog/x2/QzM1ENChPKxMDhiQuRHsqc+lg==
++    dependencies:
++      "@types/estree" "0.0.39"
++      estree-walker "^1.0.1"
++      picomatch "^2.2.2"
++  
++  "@types/estree@*":
++    version "0.0.51"
++    resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.51.tgz#cfd70924a25a3fd32b218e5e420e6897e1ac4f40"
++    integrity sha512-CuPgU6f3eT/XgKKPqKd/gLZV1Xmvf1a2R5POBOGQa6uv82xpls89HU5zKeVoyR8XzHd1RGNOlQlvUe3CFkjWNQ==
++  
++  "@types/estree@0.0.39":
++    version "0.0.39"
++    resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.39.tgz#e177e699ee1b8c22d23174caaa7422644389509f"
++    integrity sha512-EYNwp3bU+98cpU4lAWYYL7Zz+2gryWH1qbdDTidVd6hkiR6weksdbMadyXKXNPEkQFhXM+hVO9ZygomHXp+AIw==
++  
++  "@types/node@*":
++    version "17.0.18"
++    resolved "https://registry.yarnpkg.com/@types/node/-/node-17.0.18.tgz#3b4fed5cfb58010e3a2be4b6e74615e4847f1074"
++    integrity sha512-eKj4f/BsN/qcculZiRSujogjvp5O/k4lOW5m35NopjZM/QwLOR075a8pJW5hD+Rtdm2DaCVPENS6KtSQnUD6BA==
++  
++  "@types/resolve@1.17.1":
++    version "1.17.1"
++    resolved "https://registry.yarnpkg.com/@types/resolve/-/resolve-1.17.1.tgz#3afd6ad8967c77e4376c598a82ddd58f46ec45d6"
++    integrity sha512-yy7HuzQhj0dhGpD8RLXSZWEkLsV9ibvxvi6EiJ3bkqLAO1RGo0WbkWQiwpRlSFymTJRz0d3k5LM3kkx8ArDbLw==
++    dependencies:
++      "@types/node" "*"
++  
++  "@yarnpkg/lockfile@^1.1.0":
++    version "1.1.0"
++    resolved "https://registry.yarnpkg.com/@yarnpkg/lockfile/-/lockfile-1.1.0.tgz#e77a97fbd345b76d83245edcd17d393b1b41fb31"
++    integrity sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==
++  
++  "aleo-wasm@file:../aleo/wasm/pkg":
++    version "0.3.2"
++  
++  ansi-styles@^3.2.1:
++    version "3.2.1"
++    resolved "https://registry.yarnpkg.com/ansi-styles/-/ansi-styles-3.2.1.tgz#41fbb20243e50b12be0f04b8dedbf07520ce841d"
++    integrity sha512-VT0ZI6kZRdTh8YyJw3SMbYm/u+NqfsAxEpWO0Pf9sq8/e94WxxOpPKx9FR1FlyCtOVDNOQ+8ntlqFxiRc+r5qA==
++    dependencies:
++      color-convert "^1.9.0"
++  
++  balanced-match@^1.0.0:
++    version "1.0.2"
++    resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
++    integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
++  
++  brace-expansion@^1.1.7:
++    version "1.1.11"
++    resolved "https://registry.yarnpkg.com/brace-expansion/-/brace-expansion-1.1.11.tgz#3c7fcbf529d87226f3d2f52b966ff5271eb441dd"
++    integrity sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==
++    dependencies:
++      balanced-match "^1.0.0"
++      concat-map "0.0.1"
++  
++  braces@^3.0.1:
++    version "3.0.2"
++    resolved "https://registry.yarnpkg.com/braces/-/braces-3.0.2.tgz#3454e1a462ee8d599e236df336cd9ea4f8afe107"
++    integrity sha512-b8um+L1RzM3WDSzvhm6gIz1yfTbBt6YTlcEKAvsmqCZZFw46z626lVj9j1yEPW33H5H+lBQpZMP1k8l+78Ha0A==
++    dependencies:
++      fill-range "^7.0.1"
++  
++  builtin-modules@^3.1.0:
++    version "3.2.0"
++    resolved "https://registry.yarnpkg.com/builtin-modules/-/builtin-modules-3.2.0.tgz#45d5db99e7ee5e6bc4f362e008bf917ab5049887"
++    integrity sha512-lGzLKcioL90C7wMczpkY0n/oART3MbBa8R9OFGE1rJxoVI86u4WAGfEk8Wjv10eKSyTHVGkSo3bvBylCEtk7LA==
++  
++  chalk@^2.4.2:
++    version "2.4.2"
++    resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.4.2.tgz#cd42541677a54333cf541a49108c1432b44c9424"
++    integrity sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==
++    dependencies:
++      ansi-styles "^3.2.1"
++      escape-string-regexp "^1.0.5"
++      supports-color "^5.3.0"
++  
++  ci-info@^2.0.0:
++    version "2.0.0"
++    resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-2.0.0.tgz#67a9e964be31a51e15e5010d58e6f12834002f46"
++    integrity sha512-5tK7EtrZ0N+OLFMthtqOj4fI2Jeb88C4CAZPu25LDVUgXJ0A3Js4PMGqrn0JU1W0Mh1/Z8wZzYPxqUrXeBboCQ==
++  
++  color-convert@^1.9.0:
++    version "1.9.3"
++    resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.3.tgz#bb71850690e1f136567de629d2d5471deda4c1e8"
++    integrity sha512-QfAUtd+vFdAtFQcC8CCyYt1fYWxSqAiK2cSD6zDB8N3cpsEBAvRxp9zOGg6G/SHHJYAT88/az/IuDGALsNVbGg==
++    dependencies:
++      color-name "1.1.3"
++  
++  color-name@1.1.3:
++    version "1.1.3"
++    resolved "https://registry.yarnpkg.com/color-name/-/color-name-1.1.3.tgz#a7d0558bd89c42f795dd42328f740831ca53bc25"
++    integrity sha1-p9BVi9icQveV3UIyj3QIMcpTvCU=
++  
++  commondir@^1.0.1:
++    version "1.0.1"
++    resolved "https://registry.yarnpkg.com/commondir/-/commondir-1.0.1.tgz#ddd800da0c66127393cca5950ea968a3aaf1253b"
++    integrity sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs=
++  
++  concat-map@0.0.1:
++    version "0.0.1"
++    resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
++    integrity sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
++  
++  cross-spawn@^6.0.5:
++    version "6.0.5"
++    resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-6.0.5.tgz#4a5ec7c64dfae22c3a14124dbacdee846d80cbc4"
++    integrity sha512-eTVLrBSt7fjbDygz805pMnstIs2VTBNkRm0qxZd+M7A5XDdxVRWO5MxGBXZhjY4cqLYLdtrGqRf8mBPmzwSpWQ==
++    dependencies:
++      nice-try "^1.0.4"
++      path-key "^2.0.1"
++      semver "^5.5.0"
++      shebang-command "^1.2.0"
++      which "^1.2.9"
++  
++  deepmerge@^4.2.2:
++    version "4.2.2"
++    resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-4.2.2.tgz#44d2ea3679b8f4d4ffba33f03d865fc1e7bf4955"
++    integrity sha512-FJ3UgI4gIl+PHZm53knsuSFpE+nESMr7M4v9QcgB7S63Kj/6WqMiFQJpBBYz1Pt+66bZpP3Q7Lye0Oo9MPKEdg==
++  
++  escape-string-regexp@^1.0.5:
++    version "1.0.5"
++    resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
++    integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
++  
++  estree-walker@^1.0.1:
++    version "1.0.1"
++    resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-1.0.1.tgz#31bc5d612c96b704106b477e6dd5d8aa138cb700"
++    integrity sha512-1fMXF3YP4pZZVozF8j/ZLfvnR8NSIljt56UhbZ5PeeDmmGHpgpdwQt7ITlGvYaQukCvuBRMLEiKiYC+oeIg4cg==
++  
++  estree-walker@^2.0.1:
++    version "2.0.2"
++    resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-2.0.2.tgz#52f010178c2a4c117a7757cfe942adb7d2da4cac"
++    integrity sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==
++  
++  fill-range@^7.0.1:
++    version "7.0.1"
++    resolved "https://registry.yarnpkg.com/fill-range/-/fill-range-7.0.1.tgz#1919a6a7c75fe38b2c7c77e5198535da9acdda40"
++    integrity sha512-qOo9F+dMUmC2Lcb4BbVvnKJxTPjCm+RRpe4gDuGrzkL7mEVl/djYSu2OdQ2Pa302N4oqkSg9ir6jaLWJ2USVpQ==
++    dependencies:
++      to-regex-range "^5.0.1"
++  
++  find-yarn-workspace-root@^2.0.0:
++    version "2.0.0"
++    resolved "https://registry.yarnpkg.com/find-yarn-workspace-root/-/find-yarn-workspace-root-2.0.0.tgz#f47fb8d239c900eb78179aa81b66673eac88f7bd"
++    integrity sha512-1IMnbjt4KzsQfnhnzNd8wUEgXZ44IzZaZmnLYx7D5FZlaHt2gW20Cri8Q+E/t5tIj4+epTBub+2Zxu/vNILzqQ==
++    dependencies:
++      micromatch "^4.0.2"
++  
++  fs-extra@^7.0.1:
++    version "7.0.1"
++    resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-7.0.1.tgz#4f189c44aa123b895f722804f55ea23eadc348e9"
++    integrity sha512-YJDaCJZEnBmcbw13fvdAM9AwNOJwOzrE4pqMqBq5nFiEqXUqHwlK4B+3pUw6JNvfSPtX05xFHtYy/1ni01eGCw==
++    dependencies:
++      graceful-fs "^4.1.2"
++      jsonfile "^4.0.0"
++      universalify "^0.1.0"
++  
++  fs.realpath@^1.0.0:
++    version "1.0.0"
++    resolved "https://registry.yarnpkg.com/fs.realpath/-/fs.realpath-1.0.0.tgz#1504ad2523158caa40db4a2787cb01411994ea4f"
++    integrity sha1-FQStJSMVjKpA20onh8sBQRmU6k8=
++  
++  fsevents@~2.3.2:
++    version "2.3.2"
++    resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.2.tgz#8a526f78b8fdf4623b709e0b975c52c24c02fd1a"
++    integrity sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==
++  
++  function-bind@^1.1.1:
++    version "1.1.1"
++    resolved "https://registry.yarnpkg.com/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
++    integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
++  
++  glob-parent@5.1.2:
++    version "5.1.2"
++    resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-5.1.2.tgz#869832c58034fe68a4093c17dc15e8340d8401c4"
++    integrity sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==
++    dependencies:
++      is-glob "^4.0.1"
++  
++  glob@^7.1.3, glob@^7.1.6:
++    version "7.2.0"
++    resolved "https://registry.yarnpkg.com/glob/-/glob-7.2.0.tgz#d15535af7732e02e948f4c41628bd910293f6023"
++    integrity sha512-lmLf6gtyrPq8tTjSmrO94wBeQbFR3HbLHbuyD69wuyQkImp2hWqMGB47OX65FBkPffO641IP9jWa1z4ivqG26Q==
++    dependencies:
++      fs.realpath "^1.0.0"
++      inflight "^1.0.4"
++      inherits "2"
++      minimatch "^3.0.4"
++      once "^1.3.0"
++      path-is-absolute "^1.0.0"
++  
++  graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.6:
++    version "4.2.9"
++    resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.9.tgz#041b05df45755e587a24942279b9d113146e1c96"
++    integrity sha512-NtNxqUcXgpW2iMrfqSfR73Glt39K+BLwWsPs94yR63v45T0Wbej7eRmL5cWfwEgqXnmjQp3zaJTshdRW/qC2ZQ==
++  
++  has-flag@^3.0.0:
++    version "3.0.0"
++    resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-3.0.0.tgz#b5d454dc2199ae225699f3467e5a07f3b955bafd"
++    integrity sha1-tdRU3CGZriJWmfNGfloH87lVuv0=
++  
++  has@^1.0.3:
++    version "1.0.3"
++    resolved "https://registry.yarnpkg.com/has/-/has-1.0.3.tgz#722d7cbfc1f6aa8241f16dd814e011e1f41e8796"
++    integrity sha512-f2dvO0VU6Oej7RkWJGrehjbzMAjFp5/VKPp5tTpWIV4JHHZK1/BxbFRtf/siA2SWTe09caDmVtYYzWEIbBS4zw==
++    dependencies:
++      function-bind "^1.1.1"
++  
++  inflight@^1.0.4:
++    version "1.0.6"
++    resolved "https://registry.yarnpkg.com/inflight/-/inflight-1.0.6.tgz#49bd6331d7d02d0c09bc910a1075ba8165b56df9"
++    integrity sha1-Sb1jMdfQLQwJvJEKEHW6gWW1bfk=
++    dependencies:
++      once "^1.3.0"
++      wrappy "1"
++  
++  inherits@2:
++    version "2.0.4"
++    resolved "https://registry.yarnpkg.com/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
++    integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
++  
++  is-ci@^2.0.0:
++    version "2.0.0"
++    resolved "https://registry.yarnpkg.com/is-ci/-/is-ci-2.0.0.tgz#6bc6334181810e04b5c22b3d589fdca55026404c"
++    integrity sha512-YfJT7rkpQB0updsdHLGWrvhBJfcfzNNawYDNIyQXJz0IViGf75O8EBPKSdvw2rF+LGCsX4FZ8tcr3b19LcZq4w==
++    dependencies:
++      ci-info "^2.0.0"
++  
++  is-core-module@^2.8.1:
++    version "2.8.1"
++    resolved "https://registry.yarnpkg.com/is-core-module/-/is-core-module-2.8.1.tgz#f59fdfca701d5879d0a6b100a40aa1560ce27211"
++    integrity sha512-SdNCUs284hr40hFTFP6l0IfZ/RSrMXF3qgoRHd3/79unUTvrFO/JoXwkGm+5J/Oe3E/b5GsnG330uUNgRpu1PA==
++    dependencies:
++      has "^1.0.3"
++  
++  is-docker@^2.0.0:
++    version "2.2.1"
++    resolved "https://registry.yarnpkg.com/is-docker/-/is-docker-2.2.1.tgz#33eeabe23cfe86f14bde4408a02c0cfb853acdaa"
++    integrity sha512-F+i2BKsFrH66iaUFc0woD8sLy8getkwTwtOBjvs56Cx4CgJDeKQeqfz8wAYiSb8JOprWhHH5p77PbmYCvvUuXQ==
++  
++  is-extglob@^2.1.1:
++    version "2.1.1"
++    resolved "https://registry.yarnpkg.com/is-extglob/-/is-extglob-2.1.1.tgz#a88c02535791f02ed37c76a1b9ea9773c833f8c2"
++    integrity sha1-qIwCU1eR8C7TfHahueqXc8gz+MI=
++  
++  is-glob@^4.0.1:
++    version "4.0.3"
++    resolved "https://registry.yarnpkg.com/is-glob/-/is-glob-4.0.3.tgz#64f61e42cbbb2eec2071a9dac0b28ba1e65d5084"
++    integrity sha512-xelSayHH36ZgE7ZWhli7pW34hNbNl8Ojv5KVmkJD4hBdD3th8Tfk9vYasLM+mXWOZhFkgZfxhLSnrwRr4elSSg==
++    dependencies:
++      is-extglob "^2.1.1"
++  
++  is-module@^1.0.0:
++    version "1.0.0"
++    resolved "https://registry.yarnpkg.com/is-module/-/is-module-1.0.0.tgz#3258fb69f78c14d5b815d664336b4cffb6441591"
++    integrity sha1-Mlj7afeMFNW4FdZkM2tM/7ZEFZE=
++  
++  is-number@^7.0.0:
++    version "7.0.0"
++    resolved "https://registry.yarnpkg.com/is-number/-/is-number-7.0.0.tgz#7535345b896734d5f80c4d06c50955527a14f12b"
++    integrity sha512-41Cifkg6e8TylSpdtTpeLVMqvSBEVzTttHvERD741+pnZ8ANv0004MRL43QKPDlK9cGvNp6NZWZUBlbGXYxxng==
++  
++  is-reference@^1.2.1:
++    version "1.2.1"
++    resolved "https://registry.yarnpkg.com/is-reference/-/is-reference-1.2.1.tgz#8b2dac0b371f4bc994fdeaba9eb542d03002d0b7"
++    integrity sha512-U82MsXXiFIrjCK4otLT+o2NA2Cd2g5MLoOVXUZjIOhLurrRxpEXzI8O0KZHr3IjLvlAH1kTPYSuqer5T9ZVBKQ==
++    dependencies:
++      "@types/estree" "*"
++  
++  is-wsl@^2.1.1:
++    version "2.2.0"
++    resolved "https://registry.yarnpkg.com/is-wsl/-/is-wsl-2.2.0.tgz#74a4c76e77ca9fd3f932f290c17ea326cd157271"
++    integrity sha512-fKzAra0rGJUUBwGBgNkHZuToZcn+TtXHpeCgmkMJMMYx1sQDYaCSyjJBSCa2nH1DGm7s3n1oBnohoVTBaN7Lww==
++    dependencies:
++      is-docker "^2.0.0"
++  
++  isexe@^2.0.0:
++    version "2.0.0"
++    resolved "https://registry.yarnpkg.com/isexe/-/isexe-2.0.0.tgz#e8fbf374dc556ff8947a10dcb0572d633f2cfa10"
++    integrity sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=
++  
++  jsonfile@^4.0.0:
++    version "4.0.0"
++    resolved "https://registry.yarnpkg.com/jsonfile/-/jsonfile-4.0.0.tgz#8771aae0799b64076b76640fca058f9c10e33ecb"
++    integrity sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss=
++    optionalDependencies:
++      graceful-fs "^4.1.6"
++  
++  klaw-sync@^6.0.0:
++    version "6.0.0"
++    resolved "https://registry.yarnpkg.com/klaw-sync/-/klaw-sync-6.0.0.tgz#1fd2cfd56ebb6250181114f0a581167099c2b28c"
++    integrity sha512-nIeuVSzdCCs6TDPTqI8w1Yre34sSq7AkZ4B3sfOBbI2CgVSB4Du4aLQijFU2+lhAFCwt9+42Hel6lQNIv6AntQ==
++    dependencies:
++      graceful-fs "^4.1.11"
++  
++  magic-string@^0.25.7:
++    version "0.25.7"
++    resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.25.7.tgz#3f497d6fd34c669c6798dcb821f2ef31f5445051"
++    integrity sha512-4CrMT5DOHTDk4HYDlzmwu4FVCcIYI8gauveasrdCu2IKIFOJ3f0v/8MDGJCDL9oD2ppz/Av1b0Nj345H9M+XIA==
++    dependencies:
++      sourcemap-codec "^1.4.4"
++  
++  micromatch@^4.0.2:
++    version "4.0.4"
++    resolved "https://registry.yarnpkg.com/micromatch/-/micromatch-4.0.4.tgz#896d519dfe9db25fce94ceb7a500919bf881ebf9"
++    integrity sha512-pRmzw/XUcwXGpD9aI9q/0XOwLNygjETJ8y0ao0wdqprrzDa4YnxLcz7fQRZr8voh8V10kGhABbNcHVk5wHgWwg==
++    dependencies:
++      braces "^3.0.1"
++      picomatch "^2.2.3"
++  
++  minimatch@^3.0.4:
++    version "3.1.1"
++    resolved "https://registry.yarnpkg.com/minimatch/-/minimatch-3.1.1.tgz#879ad447200773912898b46cd516a7abbb5e50b0"
++    integrity sha512-reLxBcKUPNBnc/sVtAbxgRVFSegoGeLaSjmphNhcwcolhYLRgtJscn5mRl6YRZNQv40Y7P6JM2YhSIsbL9OB5A==
++    dependencies:
++      brace-expansion "^1.1.7"
++  
++  minimist@^1.2.0:
++    version "1.2.5"
++    resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
++    integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
++  
++  nice-try@^1.0.4:
++    version "1.0.5"
++    resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
++    integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
++  
++  once@^1.3.0:
++    version "1.4.0"
++    resolved "https://registry.yarnpkg.com/once/-/once-1.4.0.tgz#583b1aa775961d4b113ac17d9c50baef9dd76bd1"
++    integrity sha1-WDsap3WWHUsROsF9nFC6753Xa9E=
++    dependencies:
++      wrappy "1"
++  
++  open@^7.4.2:
++    version "7.4.2"
++    resolved "https://registry.yarnpkg.com/open/-/open-7.4.2.tgz#b8147e26dcf3e426316c730089fd71edd29c2321"
++    integrity sha512-MVHddDVweXZF3awtlAS+6pgKLlm/JgxZ90+/NBurBoQctVOOB/zDdVjcyPzQ+0laDGbsWgrRkflI65sQeOgT9Q==
++    dependencies:
++      is-docker "^2.0.0"
++      is-wsl "^2.1.1"
++  
++  os-tmpdir@~1.0.2:
++    version "1.0.2"
++    resolved "https://registry.yarnpkg.com/os-tmpdir/-/os-tmpdir-1.0.2.tgz#bbe67406c79aa85c5cfec766fe5734555dfa1274"
++    integrity sha1-u+Z0BseaqFxc/sdm/lc0VV36EnQ=
++  
++  patch-package@^6.4.7:
++    version "6.4.7"
++    resolved "https://registry.yarnpkg.com/patch-package/-/patch-package-6.4.7.tgz#2282d53c397909a0d9ef92dae3fdeb558382b148"
++    integrity sha512-S0vh/ZEafZ17hbhgqdnpunKDfzHQibQizx9g8yEf5dcVk3KOflOfdufRXQX8CSEkyOQwuM/bNz1GwKvFj54kaQ==
++    dependencies:
++      "@yarnpkg/lockfile" "^1.1.0"
++      chalk "^2.4.2"
++      cross-spawn "^6.0.5"
++      find-yarn-workspace-root "^2.0.0"
++      fs-extra "^7.0.1"
++      is-ci "^2.0.0"
++      klaw-sync "^6.0.0"
++      minimist "^1.2.0"
++      open "^7.4.2"
++      rimraf "^2.6.3"
++      semver "^5.6.0"
++      slash "^2.0.0"
++      tmp "^0.0.33"
++  
++  path-is-absolute@^1.0.0:
++    version "1.0.1"
++    resolved "https://registry.yarnpkg.com/path-is-absolute/-/path-is-absolute-1.0.1.tgz#174b9268735534ffbc7ace6bf53a5a9e1b5c5f5f"
++    integrity sha1-F0uSaHNVNP+8es5r9TpanhtcX18=
++  
++  path-key@^2.0.1:
++    version "2.0.1"
++    resolved "https://registry.yarnpkg.com/path-key/-/path-key-2.0.1.tgz#411cadb574c5a140d3a4b1910d40d80cc9f40b40"
++    integrity sha1-QRyttXTFoUDTpLGRDUDYDMn0C0A=
++  
++  path-parse@^1.0.7:
++    version "1.0.7"
++    resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.7.tgz#fbc114b60ca42b30d9daf5858e4bd68bbedb6735"
++    integrity sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==
++  
++  picomatch@^2.2.2, picomatch@^2.2.3:
++    version "2.3.1"
++    resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
++    integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
++  
++  resolve@^1.17.0, resolve@^1.19.0:
++    version "1.22.0"
++    resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.22.0.tgz#5e0b8c67c15df57a89bdbabe603a002f21731198"
++    integrity sha512-Hhtrw0nLeSrFQ7phPp4OOcVjLPIeMnRlr5mcnVuMe7M/7eBn98A3hmFRLoFo3DLZkivSYwhRUJTyPyWAk56WLw==
++    dependencies:
++      is-core-module "^2.8.1"
++      path-parse "^1.0.7"
++      supports-preserve-symlinks-flag "^1.0.0"
++  
++  rimraf@^2.6.3:
++    version "2.7.1"
++    resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.7.1.tgz#35797f13a7fdadc566142c29d4f07ccad483e3ec"
++    integrity sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w==
++    dependencies:
++      glob "^7.1.3"
++  
++  rimraf@^3.0.2:
++    version "3.0.2"
++    resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-3.0.2.tgz#f1a5402ba6220ad52cc1282bac1ae3aa49fd061a"
++    integrity sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==
++    dependencies:
++      glob "^7.1.3"
++  
++  rollup-wasm-pack-import@^2.0.0:
++    version "2.0.0"
++    resolved "https://registry.yarnpkg.com/rollup-wasm-pack-import/-/rollup-wasm-pack-import-2.0.0.tgz#66ce74c3dff687731f9b1c3c424b11b4108b51f5"
++    integrity sha512-Egh0ygKmHXC7uWdsDXpATr2oBT20IduBUAyvkEbxFQLrB9GxgmwsFMfFW9JvmZjDHDQ+kJ2JcF/N+ZF4t5CWUQ==
++  
++  rollup@^2.67.2:
++    version "2.67.2"
++    resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.67.2.tgz#d95e15f60932ad21e05a870bd0aa0b235d056f04"
++    integrity sha512-hoEiBWwZtf1QdK3jZIq59L0FJj4Fiv4RplCO4pvCRC86qsoFurWB4hKQIjoRf3WvJmk5UZ9b0y5ton+62fC7Tw==
++    optionalDependencies:
++      fsevents "~2.3.2"
++  
++  semver@^5.5.0, semver@^5.6.0:
++    version "5.7.1"
++    resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
++    integrity sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==
++  
++  shebang-command@^1.2.0:
++    version "1.2.0"
++    resolved "https://registry.yarnpkg.com/shebang-command/-/shebang-command-1.2.0.tgz#44aac65b695b03398968c39f363fee5deafdf1ea"
++    integrity sha1-RKrGW2lbAzmJaMOfNj/uXer98eo=
++    dependencies:
++      shebang-regex "^1.0.0"
++  
++  shebang-regex@^1.0.0:
++    version "1.0.0"
++    resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-1.0.0.tgz#da42f49740c0b42db2ca9728571cb190c98efea3"
++    integrity sha1-2kL0l0DAtC2yypcoVxyxkMmO/qM=
++  
++  slash@^2.0.0:
++    version "2.0.0"
++    resolved "https://registry.yarnpkg.com/slash/-/slash-2.0.0.tgz#de552851a1759df3a8f206535442f5ec4ddeab44"
++    integrity sha512-ZYKh3Wh2z1PpEXWr0MpSBZ0V6mZHAQfYevttO11c51CaWjGTaadiKZ+wVt1PbMlDV5qhMFslpZCemhwOK7C89A==
++  
++  sourcemap-codec@^1.4.4:
++    version "1.4.8"
++    resolved "https://registry.yarnpkg.com/sourcemap-codec/-/sourcemap-codec-1.4.8.tgz#ea804bd94857402e6992d05a38ef1ae35a9ab4c4"
++    integrity sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==
++  
++  supports-color@^5.3.0:
++    version "5.5.0"
++    resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-5.5.0.tgz#e2e69a44ac8772f78a1ec0b35b689df6530efc8f"
++    integrity sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==
++    dependencies:
++      has-flag "^3.0.0"
++  
++  supports-preserve-symlinks-flag@^1.0.0:
++    version "1.0.0"
++    resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
++    integrity sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==
++  
++  tmp@^0.0.33:
++    version "0.0.33"
++    resolved "https://registry.yarnpkg.com/tmp/-/tmp-0.0.33.tgz#6d34335889768d21b2bcda0aa277ced3b1bfadf9"
++    integrity sha512-jRCJlojKnZ3addtTOjdIqoRuPEKBvNXcGYqzO6zWZX8KfKEpnGY5jfggJQ3EjKuu8D4bJRr0y+cYJFmYbImXGw==
++    dependencies:
++      os-tmpdir "~1.0.2"
++  
++  to-regex-range@^5.0.1:
++    version "5.0.1"
++    resolved "https://registry.yarnpkg.com/to-regex-range/-/to-regex-range-5.0.1.tgz#1648c44aae7c8d988a326018ed72f5b4dd0392e4"
++    integrity sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==
++    dependencies:
++      is-number "^7.0.0"
++  
++  universalify@^0.1.0:
++    version "0.1.2"
++    resolved "https://registry.yarnpkg.com/universalify/-/universalify-0.1.2.tgz#b646f69be3942dabcecc9d6639c80dc105efaa66"
++    integrity sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==
++  
++  which@^1.2.9:
++    version "1.3.1"
++    resolved "https://registry.yarnpkg.com/which/-/which-1.3.1.tgz#a45043d54f5805316da8d62f9f50918d3da70b0a"
++    integrity sha512-HxJdYWq1MTIQbJ3nw0cqssHoTNU267KlrDuGZ1WYlxDStUtKUhOaJmh112/TZmHxxUfuJqPXSOm7tDyas0OSIQ==
++    dependencies:
++      isexe "^2.0.0"
++  
++  wrappy@1:
++    version "1.0.2"
++    resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
++    integrity sha1-tSQ9jz7BqjXxNkYFvA0QNuMKtp8=
+diff --git a/node_modules/aleo-wasm-bundler/yarn.lock b/node_modules/aleo-wasm-bundler/yarn.lock
+index 3cb9a10..00d7a18 100644
+--- a/node_modules/aleo-wasm-bundler/yarn.lock
++++ b/node_modules/aleo-wasm-bundler/yarn.lock
+@@ -69,7 +69,7 @@
+   integrity sha512-GpSwvyXOcOOlV70vbnzjj4fW5xW/FdUF6nQEt1ENy7m4ZCczi1+/buVUPAqmGfqznsORNFzUMjctTIp8a9tuCQ==
+ 
+ "aleo-wasm@file:../aleo/wasm/pkg":
+-  version "0.3.2"
++  version "0.0.0"
+ 
+ ansi-styles@^3.2.1:
+   version "3.2.1"
+@@ -160,6 +160,11 @@ escape-string-regexp@^1.0.5:
+   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
+   integrity sha1-G2HAViGQqN/2rjuyzwIAyhMLhtQ=
+ 
++estree-walker@^0.6.1:
++  version "0.6.1"
++  resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-0.6.1.tgz#53049143f40c6eb918b23671d1fe3219f3a1b362"
++  integrity sha512-SqmZANLWS0mnatqbSfRP5g8OXZC12Fgg1IwNtLsyHDzJizORW4khDfjPqJZsemPWBB2uqykUah5YpQ6epsqC/w==
++
+ estree-walker@^1.0.1:
+   version "1.0.1"
+   resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-1.0.1.tgz#31bc5d612c96b704106b477e6dd5d8aa138cb700"
+@@ -331,7 +336,7 @@ klaw-sync@^6.0.0:
+   dependencies:
+     graceful-fs "^4.1.11"
+ 
+-magic-string@^0.25.7:
++magic-string@^0.25.3, magic-string@^0.25.7:
+   version "0.25.7"
+   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.25.7.tgz#3f497d6fd34c669c6798dcb821f2ef31f5445051"
+   integrity sha512-4CrMT5DOHTDk4HYDlzmwu4FVCcIYI8gauveasrdCu2IKIFOJ3f0v/8MDGJCDL9oD2ppz/Av1b0Nj345H9M+XIA==
+@@ -445,6 +450,29 @@ rimraf@^3.0.2:
+   dependencies:
+     glob "^7.1.3"
+ 
++rollup-plugin-inject@^3.0.0:
++  version "3.0.2"
++  resolved "https://registry.yarnpkg.com/rollup-plugin-inject/-/rollup-plugin-inject-3.0.2.tgz#e4233855bfba6c0c12a312fd6649dff9a13ee9f4"
++  integrity sha512-ptg9PQwzs3orn4jkgXJ74bfs5vYz1NCZlSQMBUA0wKcGp5i5pA1AO3fOUEte8enhGUC+iapTCzEWw2jEFFUO/w==
++  dependencies:
++    estree-walker "^0.6.1"
++    magic-string "^0.25.3"
++    rollup-pluginutils "^2.8.1"
++
++rollup-plugin-node-polyfills@^0.2.1:
++  version "0.2.1"
++  resolved "https://registry.yarnpkg.com/rollup-plugin-node-polyfills/-/rollup-plugin-node-polyfills-0.2.1.tgz#53092a2744837164d5b8a28812ba5f3ff61109fd"
++  integrity sha512-4kCrKPTJ6sK4/gLL/U5QzVT8cxJcofO0OU74tnB19F40cmuAKSzH5/siithxlofFEjwvw1YAhPmbvGNA6jEroA==
++  dependencies:
++    rollup-plugin-inject "^3.0.0"
++
++rollup-pluginutils@^2.8.1:
++  version "2.8.2"
++  resolved "https://registry.yarnpkg.com/rollup-pluginutils/-/rollup-pluginutils-2.8.2.tgz#72f2af0748b592364dbd3389e600e5a9444a351e"
++  integrity sha512-EEp9NhnUkwY8aif6bxgovPHMoMoNr2FulJziTndpt5H9RdwC47GSGuII9XxpSdzVGM0GWrNPHV6ie1LTNJPaLQ==
++  dependencies:
++    estree-walker "^0.6.1"
++
+ rollup-wasm-pack-import@^2.0.0:
+   version "2.0.0"
+   resolved "https://registry.yarnpkg.com/rollup-wasm-pack-import/-/rollup-wasm-pack-import-2.0.0.tgz#66ce74c3dff687731f9b1c3c424b11b4108b51f5"
