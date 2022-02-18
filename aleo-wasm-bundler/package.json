@@ -8,8 +8,8 @@
   "private": true,
   "author": "Piotr Roslaniec <p.roslaniec@gmail.com>",
   "scripts": {
-    "preinstall": "#cd ../aleo/wasm && wasm-pack build --target web",
-    "postinstall": "#patch-package",
+    "preinstall": "cd ../aleo/wasm && wasm-pack build --target web",
+    "postinstall": "patch-package",
     "clean": "rimraf dist",
     "build": "rollup -c",
     "build:clean": "rimraf node_modules/aleo-wasm && yarn clean && yarn install --check-files && yarn build",

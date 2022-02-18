@@ -55,7 +55,7 @@
   <br />
 
   <div id="sendTxBtnDiv" style="display: none;">
-    <p>Finally, we send a transaction using our wallet.<p>
+    <p>Finally, we send a transaction using our wallet.</p>
     <button class="sendTx">Send Transaction</button>
   </div>
   <br />
@@ -90,7 +90,7 @@
         alert('The user rejected the request.');
       } else {
         console.error(error)
-        alert('Problem happened: ' + error.message || error)
+        alert('Error: ' + error.message || error)
       }
     }
   }
@@ -113,7 +113,7 @@
       document.querySelector('#sendTxBtnDiv').style.display = 'block'
     } catch (error) {
       console.error(error)
-      alert('Problem happened: ' + error.message || error)
+      alert('Error: ' + error.message || error)
     }
   }
 
@@ -129,7 +129,7 @@
       console.log({ response })
     } catch (err) {
       console.error(err)
-      alert('Problem happened: ' + err.message || err)
+      alert('Error: ' + err.message || err)
     }
   }
 </script>

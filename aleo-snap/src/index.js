@@ -1,4 +1,5 @@
 const { ethErrors } = require('eth-rpc-errors');
+const { getBIP44AddressKeyDeriver } = require('@metamask/key-tree');
 const aleo = require('aleo-wasm-bundler');
 
 const { SHA3 } = require('sha3');
@@ -21,6 +22,7 @@ let seed;
 let accountJson;
 let isConfirmTx = false;
 let txPayload;
+let bipEthNode;
 
 const initializeWasm = async () => {
   try {
@@ -33,13 +35,19 @@ const initializeWasm = async () => {
   }
 };
 
-function makeAccount(aleo_) {
-  if (!account) {
-    const hash = new SHA3(256);
-    hash.update(seed);
-    const buffer = hash.digest();
-    account = aleo_.Account.from_seed(buffer);
+function makeAccount() {
+  if (account) {
+    return;
   }
+
+  const deriveEthAddress = getBIP44AddressKeyDeriver(bipEthNode);
+  const addressKey0 = deriveEthAddress(0);
+  const seedWithBip44 = `${seed}${addressKey0.toString('hex')}`;
+
+  const hash = new SHA3(256);
+  hash.update(seedWithBip44);
+  const buffer = hash.digest();
+  account = aleo.Account.from_seed(buffer);
 }
 
 wallet.registerRpcMessageHandler(async (originString, requestObject) => {
@@ -54,7 +62,11 @@ wallet.registerRpcMessageHandler(async (originString, requestObject) => {
         return ethErrors.rpc.invalidParams('Missing parameter: seed');
       }
 
-      makeAccount(aleo, seed);
+      bipEthNode = await wallet.request({
+        method: 'snap_getBip44Entropy_60',
+      });
+
+      makeAccount();
       accountJson = {
         address: account.to_address(),
         view_key: account.to_view_key(),
@@ -72,7 +84,7 @@ wallet.registerRpcMessageHandler(async (originString, requestObject) => {
         return ethErrors.rpc.invalidParams('Missing parameter: txPayload');
       }
 
-      isConfirmTx = wallet.request({
+      isConfirmTx = await wallet.request({
         method: 'snap_confirm',
         params: [
           {
@@ -84,10 +96,17 @@ wallet.registerRpcMessageHandler(async (originString, requestObject) => {
       });
 
       if (!isConfirmTx) {
-        return 'user rejected confirmation';
+        return null;
       }
 
-      makeAccount(aleo, seed);
+      bipEthNode = await wallet.request({
+        method: 'snap_getBip44Entropy_60',
+      });
+
+      makeAccount();
+
+      // TODO: Send transaction here
+
       return 'not implemented';
     default:
       throw ethErrors.rpc.methodNotFound({ data: { request: requestObject } });

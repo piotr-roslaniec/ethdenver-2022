@@ -28,6 +28,7 @@
     "wasm:hex": "node ./scripts/wasm-hex.js"
   },
   "dependencies": {
+    "@metamask/key-tree": "^3.0.1",
     "aleo-wasm-bundler": "file:../aleo-wasm-bundler",
     "sha3": "^2.1.4"
   },
