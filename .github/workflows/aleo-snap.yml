@@ -32,14 +32,18 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
+
+      - name: Buid aleo-wasm
+        run:  wasm-pack build --target web
+        working-directory: aleo/wasm  
       
       - name: Install aleo-wasm-bundler
         uses: bahmutov/npm-install@v1
         with:
           working-directory: aleo-wasm-bundler
-      
+          
       - name: Buid aleo-wasm-bundler
-        run: yarn build
+        run: npx patch-package && yarn build
         working-directory: aleo-wasm-bundler
         
       - name: Install aleo-snap
