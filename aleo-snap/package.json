@@ -14,23 +14,21 @@
     "snap.manifest.json"
   ],
   "scripts": {
-    "preinstall": "cd ../aleo/wasm && wasm-pack build --target no-modules",
     "postinstall": "patch-package",
-    "build:clean": "yarn clean && yarn build",
+    "build:clean": "rm -rf node_modules/aleo-wasm-bundler && yarn install --check-files && yarn clean && yarn build",
     "build:website": "node ./scripts/build-website.js",
-    "build:local": "rimraf node_modules/aleo-wasm && yarn install --check-files && yarn build:clean",
-    "build": "mm-snap build --transpilationMode all --verboseErrors",
+    "build": "yarn wasm:hex && mm-snap build --transpilationMode all --verboseErrors",
     "serve": "mm-snap serve",
-    "clean": "rimraf dist/*",
+    "clean": "rimraf dist",
     "test": "echo 'TODO'",
     "lint:eslint": "eslint . --cache --ext js,ts",
     "lint:misc": "prettier '**/*.json' '**/*.md' '!CHANGELOG.md' --ignore-path .gitignore",
     "lint": "yarn lint:eslint && yarn lint:misc --check",
     "lint:fix": "yarn lint:eslint --fix && yarn lint:misc --write",
-    "patch-package": "patch-package --exclude 'nothing' aleo-wasm"
+    "wasm:hex": "node ./scripts/wasm-hex.js"
   },
   "dependencies": {
-    "aleo-wasm": "file:../aleo/wasm/pkg"
+    "aleo-wasm-bundler": "file:../aleo-wasm-bundler"
   },
   "devDependencies": {
     "@metamask/eslint-config": "^8.0.0",
