@@ -88,7 +88,7 @@ wallet.registerRpcMessageHandler(async (originString, requestObject) => {
         method: 'snap_confirm',
         params: [
           {
-            prompt: `Confirm transaction: ${originString}`,
+            prompt: `Confirm transaction`,
             description: 'Are you sure you want to send this transaction?',
             textAreaContent: JSON.stringify(txPayload, null, 2),
           },
