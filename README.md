@@ -1,5 +1,9 @@
 # ethdenver-2022
 
+![Snap diagram](snap-diagram.png)
+
+## Sources
+
 `./aleo` - Aleo SDK fork
 
 `./web-app` - [Vanity address generation in the browser](https://reverent-jang-80780c.netlify.app/)
