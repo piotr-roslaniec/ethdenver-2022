@@ -1,4 +1,8 @@
-# ethdenver-2022
+# Aleo Web Wallet Snap
+
+![Project logo](logo.png)
+
+## How it works
 
 ![Snap diagram](snap-diagram.png)
 
