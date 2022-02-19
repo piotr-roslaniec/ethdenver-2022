@@ -16,7 +16,7 @@
   "scripts": {
     "postinstall": "patch-package",
     "build:clean": "rm -rf node_modules/aleo-wasm-bundler && yarn install --check-files && yarn clean && yarn build",
-    "build:website": "node ./scripts/build-website.js",
+    "build:website": "node ./scripts/build-website.js && cp snap.* dist/",
     "build": "yarn wasm:hex && mm-snap build --transpilationMode all --verboseErrors",
     "serve": "mm-snap serve",
     "clean": "rimraf dist",
