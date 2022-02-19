@@ -33,7 +33,6 @@ export class RPC {
           'Basic ' + Base64.encode(this.user + ':' + this.password),
       };
     }
-
     const response = await fetch(
       this.uri,
       this.mergeOptions(
@@ -41,7 +40,10 @@ export class RPC {
           method: 'post',
           headers: {
             'Content-Type': 'application/json',
+            'Keep-Alive': 'timeout=15, max=100',
+            'Connection': 'Keep-Alive'
           },
+          keepalive: true,
           body: JSON.stringify({
             jsonrpc: '2.0',
             id: id,

@@ -362,4 +362,14 @@ export class AleoClient {
   async validate_raw_transaction(transaction_bytes: string): Promise<boolean> {
     return await this.rpc.call('validaterawtransaction', transaction_bytes);
   }
+
+    /**
+   * Get latest block from the network.
+   *
+   * @return {*}  {Promise<Block>} - The latest block
+   * @memberof AleoClient
+   */
+     async get_latest_block(transaction_bytes: string): Promise<Block> {
+      return await this.rpc.call('latestblock', transaction_bytes);
+    }
 }
