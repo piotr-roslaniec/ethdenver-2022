@@ -7,29 +7,25 @@
 
 <body>
   <h1>Aleo Snap</h1>
-  <h2>Aleo wallet implementation using MetaMask Snaps</h2>
-  <!-- <details>
-    <summary>Instructions</summary>
+  <details>
+    <summary>Installation Instructions</summary>
+    In order to run this demo, we need to install a modified snap version:
     <ul>
-      <li>First, click "Connect". Then, try out the other buttons!</li>
-      <li>Please note that:</li>
+      <li>Pull down this <a href="https://github.com/MetaMask/metamask-extension/tree/eth-denver-2022">branch</a> </li>
+      <li>Build the extension locally: <code>yarn setup && yarn start --build-type flask</code></li>
       <ul>
-        <li>
-          The <code>snap.manifest.json</code> and <code>package.json</code> must be located in located in the server
-          root directory..
-        </li>
-        <li>
-          The Snap bundle must be hosted at the location specified by the <code>location</code> field of
-          <code>snap.manifest.json</code>.
-        </li>
+        <li>If you want a more performant build without live-reloading, run: <code>yarn dist --build-type flask</code>
+          instead.</li>
       </ul>
+      <li>Load the unpacked extension (see "custom build" instructions) from <a
+          href="https://github.com/MetaMask/metamask-extension/tree/eth-denver-2022#other-docs">here</a></li>
     </ul>
-  </details> -->
-  <br />
+    </ul>
+  </details>
 
+  <h2>Aleo wallet implementation using MetaMask Snaps</h2>
   <p>First, let's connect to MetaMask and install the snap.</p>
   <button class="connect">Connect</button>
-  <br />
   <br />
 
   <div id="accountButtonDiv" style="display: none;">
