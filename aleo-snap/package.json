@@ -30,6 +30,7 @@
   "dependencies": {
     "@metamask/key-tree": "^3.0.1",
     "aleo-wasm-bundler": "file:../aleo-wasm-bundler",
+    "eth-rpc-errors": "^4.0.3",
     "sha3": "^2.1.4"
   },
   "devDependencies": {

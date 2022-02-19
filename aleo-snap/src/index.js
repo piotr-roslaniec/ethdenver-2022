@@ -1,7 +1,6 @@
 const { ethErrors } = require('eth-rpc-errors');
 const { getBIP44AddressKeyDeriver } = require('@metamask/key-tree');
 const aleo = require('aleo-wasm-bundler');
-
 const { SHA3 } = require('sha3');
 
 const { PROGRAM_WASM_HEX } = require('./wasm');

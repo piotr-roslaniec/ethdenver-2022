@@ -1697,7 +1697,7 @@ ajv@^8.0.1, ajv@^8.8.2:
 "aleo-wasm-bundler@file:../aleo-wasm-bundler":
   version "0.1.0"
   dependencies:
-    aleo-wasm "file:../../../../../.cache/yarn/v6/npm-aleo-wasm-bundler-0.1.0-5297612d-a5b3-4673-bba4-dafca091b30e-1645220368135/node_modules/aleo/wasm/pkg"
+    aleo-wasm "file:../../../../../.cache/yarn/v6/npm-aleo-wasm-bundler-0.1.0-73aebcc9-e204-4b70-af6a-4735519919bd-1645305032471/node_modules/aleo/wasm/pkg"
 
 "aleo-wasm@file:../aleo/wasm/pkg":
   version "0.3.2"
@@ -3116,7 +3116,7 @@ eth-rpc-errors@^3.0.0:
   dependencies:
     fast-safe-stringify "^2.0.6"
 
-eth-rpc-errors@^4.0.0, eth-rpc-errors@^4.0.2:
+eth-rpc-errors@^4.0.0, eth-rpc-errors@^4.0.2, eth-rpc-errors@^4.0.3:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/eth-rpc-errors/-/eth-rpc-errors-4.0.3.tgz#6ddb6190a4bf360afda82790bb7d9d5e724f423a"
   integrity sha512-Z3ymjopaoft7JDoxZcEb3pwdGh7yiYMhOwm2doUt6ASXlMavpNlK6Cre0+IMl2VSGyEU9rkiperQhp5iRxn5Pg==
