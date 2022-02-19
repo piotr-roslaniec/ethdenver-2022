@@ -16,12 +16,10 @@ export const NewAccount = () => {
     const generateAccount = async () => {
         clear();
         setLoading(true);
+        setTimeout(() => { }, 100);
         const account = await findAddressContainingSubstring(aleo, substr);
         setAccount(account);
         setLoading(false);
-
-        // setTimeout(() => {
-        // }, 30 * 1000);
     }
 
     const privateKey = () => account !== null ? account.to_private_key() : "";
