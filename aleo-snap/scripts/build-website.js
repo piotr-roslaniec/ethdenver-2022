@@ -6,8 +6,8 @@ main();
 
 async function main() {
   const rootPath = path.resolve(__dirname, '../');
-  const publicPath = path.join(rootPath, 'public/');
-  const imagesPath = path.join(publicPath, 'images/');
+  const distPath = path.join(rootPath, 'dist/');
+  const imagesPath = path.join(distPath, 'images/');
 
   await mkdirp(imagesPath);
   await fs.copyFile(
@@ -20,11 +20,14 @@ async function main() {
     'utf8',
   );
   await fs.writeFile(
-    path.join(publicPath, 'index.html'),
+    path.join(distPath, 'index.html'),
     htmlContents.replace(
       // eslint-disable-next-line no-template-curly-in-string
       'const snapId = `local:${window.location.href}`;',
-      'const snapId = `npm:aleo-snap`;',
+      // eslint-disable-next-line no-template-curly-in-string
+      'const snapId = `local:${window.location.href}/bundle.js`;',
+      // 'const snapId = `npm:aleo-snap`;',
     ),
+    // htmlContents,
   );
 }
