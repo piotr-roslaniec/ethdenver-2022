@@ -16,9 +16,7 @@ function arrayBufferFromHex(hexString) {
 }
 
 let wasm;
-let account;
 let seed;
-let accountJson;
 let isConfirmTx = false;
 let txPayload;
 let bipEthNode;
@@ -35,10 +33,6 @@ const initializeWasm = async () => {
 };
 
 function makeAccount() {
-  if (account) {
-    return;
-  }
-
   const deriveEthAddress = getBIP44AddressKeyDeriver(bipEthNode);
   const addressKey0 = deriveEthAddress(0);
   const seedWithBip44 = `${seed}${addressKey0.toString('hex')}`;
@@ -46,7 +40,12 @@ function makeAccount() {
   const hash = new SHA3(256);
   hash.update(seedWithBip44);
   const buffer = hash.digest();
-  account = aleo.Account.from_seed(buffer);
+  const account = aleo.Account.from_seed(buffer);
+  return {
+    address: account.to_address(),
+    view_key: account.to_view_key(),
+    to_private_key: account.to_private_key(), // TODO: Don't do this in production
+  };
 }
 
 wallet.registerRpcMessageHandler(async (originString, requestObject) => {
@@ -65,13 +64,7 @@ wallet.registerRpcMessageHandler(async (originString, requestObject) => {
         method: 'snap_getBip44Entropy_60',
       });
 
-      makeAccount();
-      accountJson = {
-        address: account.to_address(),
-        view_key: account.to_view_key(),
-        to_private_key: account.to_private_key(), // TODO: Don't do this in production
-      };
-      return accountJson;
+      return makeAccount();
 
     case 'aleo_send_transaction':
       seed = requestObject.params[0];

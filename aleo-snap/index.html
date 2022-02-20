@@ -12,11 +12,7 @@
     In order to run this demo, we need to install a modified snap version:
     <ul>
       <li>Pull down this <a href="https://github.com/MetaMask/metamask-extension/tree/eth-denver-2022">branch</a> </li>
-      <li>Build the extension locally: <code>yarn setup && yarn start --build-type flask</code></li>
-      <ul>
-        <li>If you want a more performant build without live-reloading, run: <code>yarn dist --build-type flask</code>
-          instead.</li>
-      </ul>
+      <li>Build the extension locally: <code>yarn setup && yarn dist --build-type flask</code></li>
       <li>Load the unpacked extension (see "custom build" instructions) from <a
           href="https://github.com/MetaMask/metamask-extension/tree/eth-denver-2022#other-docs">here</a></li>
     </ul>
@@ -25,6 +21,7 @@
 
   <h2>Aleo wallet implementation using MetaMask Snaps</h2>
   <p>First, let's connect to MetaMask and install the snap.</p>
+  <p>If it's your first time using this snap - click once again to install it.</p>
   <button class="connect">Connect</button>
   <br />
 
@@ -58,8 +55,8 @@
 </body>
 
 <script>
-  // const snapId = `local:${window.location.href}`;
-  const snapId = 'npm:aleo-snap';
+  const snapId = `local:${window.location.href}`;
+  // const snapId = 'npm:aleo-snap/0.1.6';
 
   const connectButton = document.querySelector('button.connect')
   const getAccountButton = document.querySelector('button.getAccount')
