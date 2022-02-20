@@ -1,10 +1,10 @@
 {
   "name": "aleo-snap",
-  "version": "0.7.0",
-  "description": "The 'Hello, world!' of MetaMask Snaps.",
+  "version": "0.1.2",
+  "description": "Aleo Wallet implemented with MetaMask Snap",
   "repository": {
     "type": "git",
-    "url": "https://github.com/MetaMask/snap-template.git"
+    "url": "https://github.com/piotr-roslaniec/ethdenver-2022/tree/main/aleo-snap"
   },
   "license": "MIT",
   "main": "src/index.js",
@@ -25,7 +25,8 @@
     "lint:misc": "prettier '**/*.json' '**/*.md' '!CHANGELOG.md' --ignore-path .gitignore",
     "lint": "yarn lint:eslint && yarn lint:misc --check",
     "lint:fix": "yarn lint:eslint --fix && yarn lint:misc --write",
-    "wasm:hex": "node ./scripts/wasm-hex.js"
+    "wasm:hex": "node ./scripts/wasm-hex.js",
+    "publish": "npm publish --access public"
   },
   "dependencies": {
     "@metamask/key-tree": "^3.0.1",
