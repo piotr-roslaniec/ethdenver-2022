@@ -1,5 +1,5 @@
 {
-  "version": "0.1.3",
+  "version": "0.1.6",
   "proposedName": "Aleo WalletSnap",
   "description": "Aleo Wallet implemented with MetaMask Snap",
   "repository": {

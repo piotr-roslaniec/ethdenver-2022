@@ -1,6 +1,6 @@
 {
   "name": "aleo-snap",
-  "version": "0.1.3",
+  "version": "0.1.6",
   "description": "Aleo Wallet implemented with MetaMask Snap",
   "repository": {
     "type": "git",
@@ -16,8 +16,8 @@
   "scripts": {
     "postinstall": "patch-package",
     "build:clean": "rm -rf node_modules/aleo-wasm-bundler && yarn install --check-files && yarn clean && yarn build",
-    "build:website": "node ./scripts/build-website.js && cp snap.* dist/",
-    "build": "yarn wasm:hex && mm-snap build --transpilationMode all --verboseErrors && cp snap.* dist/",
+    "build:website": "node ./scripts/build-website.js && cp snap.manifest.json dist/",
+    "build": "rm -rf dist && yarn wasm:hex && mm-snap build --transpilationMode all --verboseErrors && cp snap.manifest.json dist/",
     "serve": "mm-snap serve",
     "clean": "rimraf dist",
     "test": "echo 'TODO'",
