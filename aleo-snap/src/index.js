@@ -44,8 +44,18 @@ function makeAccount() {
   return {
     address: account.to_address(),
     view_key: account.to_view_key(),
-    to_private_key: account.to_private_key(), // TODO: Don't do this in production
   };
+}
+
+function sendTx(txPayload) {
+  const deriveEthAddress = getBIP44AddressKeyDeriver(bipEthNode);
+  const addressKey0 = deriveEthAddress(0);
+  const seedWithBip44 = `${seed}${addressKey0.toString('hex')}`;
+
+  const hash = new SHA3(256);
+  hash.update(seedWithBip44);
+  const buffer = hash.digest();
+  const account = aleo.Account.from_seed(buffer);
 }
 
 wallet.registerRpcMessageHandler(async (originString, requestObject) => {

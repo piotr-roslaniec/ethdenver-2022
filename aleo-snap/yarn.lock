@@ -1697,7 +1697,7 @@ ajv@^8.0.1, ajv@^8.8.2:
 "aleo-wasm-bundler@file:../aleo-wasm-bundler":
   version "0.1.0"
   dependencies:
-    aleo-wasm "file:../../../../../.cache/yarn/v6/npm-aleo-wasm-bundler-0.1.0-ee784147-7799-4c10-92e6-80acfbcd2bc2-1645318995035/node_modules/aleo/wasm/pkg"
+    aleo-wasm "file:../../../../../.cache/yarn/v6/npm-aleo-wasm-bundler-0.1.0-f8103557-e054-4e72-91c6-64de31adeab0-1645332178056/node_modules/aleo/wasm/pkg"
 
 "aleo-wasm@file:../aleo/wasm/pkg":
   version "0.3.2"
