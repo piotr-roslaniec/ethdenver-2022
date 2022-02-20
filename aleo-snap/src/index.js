@@ -3,6 +3,7 @@ const { getBIP44AddressKeyDeriver } = require('@metamask/key-tree');
 const aleo = require('aleo-wasm-bundler');
 const { SHA3 } = require('sha3');
 
+const { rpcCall } = require('./rpc');
 const { PROGRAM_WASM_HEX } = require('./wasm');
 
 // kudos: https://stackoverflow.com/a/71083193
@@ -14,6 +15,8 @@ function arrayBufferFromHex(hexString) {
       .map((byte) => parseInt(byte, 16)),
   ).buffer;
 }
+
+const RPC_URL = 'http://hamp.app:3032';
 
 let wasm;
 let seed;
@@ -47,15 +50,31 @@ function makeAccount() {
   };
 }
 
-function sendTx(txPayload) {
-  const deriveEthAddress = getBIP44AddressKeyDeriver(bipEthNode);
-  const addressKey0 = deriveEthAddress(0);
-  const seedWithBip44 = `${seed}${addressKey0.toString('hex')}`;
+async function sendTx() {
+  // const deriveEthAddress = getBIP44AddressKeyDeriver(bipEthNode);
+  // const addressKey0 = deriveEthAddress(0);
+  // const seedWithBip44 = `${seed}${addressKey0.toString('hex')}`;
 
-  const hash = new SHA3(256);
-  hash.update(seedWithBip44);
-  const buffer = hash.digest();
-  const account = aleo.Account.from_seed(buffer);
+  // const hash = new SHA3(256);
+  // hash.update(seedWithBip44);
+  // const buffer = hash.digest();
+  // const account = aleo.Account.from_seed(buffer);
+
+  const txId = await rpcCall(RPC_URL, 'sendtransaction', txPayload);
+  return txId;
+}
+
+function textEllipsis(str, maxLength, { side = 'end', ellipsis = '...' } = {}) {
+  if (str.length > maxLength) {
+    switch (side) {
+      case 'start':
+        return ellipsis + str.slice(-(maxLength - ellipsis.length));
+      case 'end':
+      default:
+        return str.slice(0, maxLength - ellipsis.length) + ellipsis;
+    }
+  }
+  return str;
 }
 
 wallet.registerRpcMessageHandler(async (originString, requestObject) => {
@@ -92,7 +111,7 @@ wallet.registerRpcMessageHandler(async (originString, requestObject) => {
           {
             prompt: `Confirm transaction`,
             description: 'Are you sure you want to send this transaction?',
-            textAreaContent: JSON.stringify(txPayload, null, 2),
+            textAreaContent: textEllipsis(txPayload, 300),
           },
         ],
       });
@@ -105,11 +124,7 @@ wallet.registerRpcMessageHandler(async (originString, requestObject) => {
         method: 'snap_getBip44Entropy_60',
       });
 
-      makeAccount();
-
-      // TODO: Send transaction here
-
-      return 'not implemented';
+      return sendTx(txPayload);
     default:
       throw ethErrors.rpc.methodNotFound({ data: { request: requestObject } });
   }
