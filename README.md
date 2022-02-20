@@ -6,10 +6,15 @@
 
 ![Snap diagram](snap-diagram.png)
 
-## Sources
+## Demo
 
-`./aleo` - Aleo SDK fork
+[Aleo Web Wallet Snap](https://reverent-jang-80780c.netlify.app/)
 
-`./web-app` - [Vanity address generation in the browser](https://reverent-jang-80780c.netlify.app/)  <!-- [![Netlify Status](https://api.netlify.com/api/v1/badges/6c55e72f-85c6-4519-b39f-d437b6d5bc1d/deploy-status)](https://app.netlify.com/sites/distracted-golick-e01855/deploys) -->
+### Demo Instructions
 
-`./aleo-snap` - [Aleo wallet in the MetaMask Snap](https://distracted-golick-e01855.netlify.app)  <!-- [![Netlify Status](https://api.netlify.com/api/v1/badges/85286868-068d-4e65-a8b9-4674e0f38a39/deploy-status)](https://app.netlify.com/sites/reverent-jang-80780c/deploys) -->
+In order to run this demo, we need to install a modified snap version:
+*   Pull down this [branch](https://github.com/MetaMask/metamask-extension/tree/eth-denver-2022)
+*   Build the extension locally: `yarn setup && yarn dist --build-type flask`
+*   Load the unpacked extension (see "custom build" instructions) from [here](https://github.com/MetaMask/metamask-extension/tree/eth-denver-2022#other-docs)
+
+</details>
