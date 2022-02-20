@@ -1,6 +1,6 @@
 const { createWorkerFactory } = require('@shopify/web-worker');
 
-export const findAddressContainingSubstring = async (snapId, substr, maxEpoch=10) => {
+export const findAddressContainingSubstring = async (substr, maxEpoch=10) => {
     console.log("Searching for address containing: " + substr);
 
     if (substr.length >= 9) {
@@ -33,7 +33,7 @@ export const findAddressContainingSubstring = async (snapId, substr, maxEpoch=10
         for (let i = 0; i < 4; i++) {
             const seed = `${substr}_${epoch}_${i}`;
             const worker = createWorker();
-            promises.push(worker.makeAccount(snapId, seed));
+            promises.push(worker.makeAccount(seed));
         }
 
         const results = await Promise.all(promises);

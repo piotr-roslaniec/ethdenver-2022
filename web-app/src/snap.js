@@ -1,9 +1,11 @@
-export async function connectSnap(snapId) {
+export const DEFAULT_SNAP_ID = 'npm:aleo-snap';
+
+export async function connectSnap() {
     try {
         const result = await ethereum.request({
             method: 'wallet_enable',
             params: [{
-                wallet_snap: { [snapId]: {} },
+                wallet_snap: { [DEFAULT_SNAP_ID]: {} },
             }]
         })
         console.log({ result})
@@ -20,11 +22,11 @@ export async function connectSnap(snapId) {
     }
 }
 
-export async function getAccount(snapId, seed) {
+export async function getAccount(seed) {
     try {
         const account = await ethereum.request({
             method: 'wallet_invokeSnap',
-            params: [snapId, {
+            params: [DEFAULT_SNAP_ID, {
                 method: 'aleo_get_account',
                 params: [seed],
             }]
@@ -37,11 +39,11 @@ export async function getAccount(snapId, seed) {
     }
 }
 
-export async function sendTransaction(snapId, seed, txPayload) {
+export async function sendTransaction(seed, txPayload) {
     try {
         const response = await ethereum.request({
             method: 'wallet_invokeSnap',
-            params: [snapId, {
+            params: [DEFAULT_SNAP_ID, {
                 method: 'aleo_send_transaction',
                 params: [seed, txPayload],
             }]
