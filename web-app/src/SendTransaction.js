@@ -1,12 +1,8 @@
 import {Card, Form, Input} from "antd";
 import React, {useState} from "react";
-import {useAleoWASM} from "./aleo-wasm-hook";
 
-const DecryptRecord = () => {
+const SendTransaction = () => {
     const layout = {labelCol: {span: 2}, wrapperCol: {span: 20}};
-    const aleo = useAleoWASM();
-    const [viewKey, setViewKey] = useState();
-    const [record, setRecord] = useState();
     const [error, setError] = useState();
 
     const onChangeViewKey = (event) => {
@@ -15,9 +11,9 @@ const DecryptRecord = () => {
 
     const onChangeRecordCiphertext = (event) => {
         try {
-            let recordCiphertext = aleo.RecordCiphertext.new(event.target.value);
-            let decryptedRecord = recordCiphertext.decrypt(viewKey);
-            setRecord(decryptedRecord);
+            // let recordCiphertext = aleo.RecordCiphertext.new(event.target.value);
+            // let decryptedRecord = recordCiphertext.decrypt(viewKey);
+            // setRecord(decryptedRecord);
             setError();
         } catch (e) {
             console.error(e);
@@ -26,7 +22,7 @@ const DecryptRecord = () => {
     }
 
     return <>
-        <Card title="Decrypt Record with View Key" style={{width: "100%", borderRadius: "20px"}}
+        <Card title="Send a Transaction" style={{width: "100%", borderRadius: "20px"}}
               bordered={false}>
             <Form {...layout}>
                 <Form.Item label="View Key" colon={false}>
@@ -58,4 +54,4 @@ const DecryptRecord = () => {
     </>;
 }
 
-export default DecryptRecord;
+export default SendTransaction;

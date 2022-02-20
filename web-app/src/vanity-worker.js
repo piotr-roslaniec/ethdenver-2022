@@ -1,10 +1,6 @@
-const { SHA3 } = require('sha3');
+const { getAccount } = require('./snap');
 
-export const makeAccount = async (aleo, seed) => {
-    const hash = new SHA3(256);
-    hash.update(seed);
-    const buffer = hash.digest();
-
-    const account = aleo.Account.from_seed(buffer);
+export const makeAccount = async (snapId, seed) => {
+    const account = await getAccount(snapId, seed)
     return Promise.resolve({ account, seed });
 }

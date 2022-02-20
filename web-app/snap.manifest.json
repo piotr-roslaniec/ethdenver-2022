@@ -1,0 +1,27 @@
+{
+  "version": "0.1.9",
+  "proposedName": "Aleo WalletSnap",
+  "description": "Aleo Wallet implemented with MetaMask Snap",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/piotr-roslaniec/ethdenver-2022/tree/main/aleo-snap"
+  },
+  "source": {
+    "shasum": "I6ABQuU0hMfCow6XRraiQcbWXUYDK1dSytRqpLgz920=",
+    "location": {
+      "npm": {
+        "filePath": "dist/bundle.js",
+        "iconPath": "images/icon.svg",
+        "packageName": "aleo-snap",
+        "registry": "https://registry.npmjs.org/"
+      }
+    }
+  },
+  "initialPermissions": {
+    "snap_confirm": {},
+    "endowment:network-access": {},
+    "endowment:wasm": {},
+    "snap_getBip44Entropy_60": {}
+  },
+  "manifestVersion": "0.1"
+}

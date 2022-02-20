@@ -6,7 +6,6 @@
     "@aleohq/ui": "^0.0.9",
     "@ant-design/icons": "^4.4.0",
     "@shopify/web-worker": "^4.0.2",
-    "aleo-wasm": "file:../aleo/wasm/pkg",
     "antd": "^4.11.2",
     "babel-loader": "^8.2.3",
     "copy-to-clipboard": "^3.3.1",
@@ -30,10 +29,9 @@
     "webpack-dev-server": "^4.7.4"
   },
   "scripts": {
-    "preinstall": "cd ../aleo/wasm && wasm-pack build",
     "start": "webpack-dev-server",
     "dev": "webpack-dev-server",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js && cp snap.* ./dist"
   },
   "eslintConfig": {
     "extends": [

@@ -1,6 +1,6 @@
 const { createWorkerFactory } = require('@shopify/web-worker');
 
-export const findAddressContainingSubstring = async (aleo, substr) => {
+export const findAddressContainingSubstring = async (snapId, substr, maxEpoch=10) => {
     console.log("Searching for address containing: " + substr);
 
     if (substr.length >= 9) {
@@ -25,28 +25,28 @@ export const findAddressContainingSubstring = async (aleo, substr) => {
         console.log("Epoch: " + epoch);
 
         epoch++;
-        // if (epoch > 2) {
-            // return null;
-        // }
+        if (epoch > maxEpoch) {
+            return null;
+        }
 
         let promises = []
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < 4; i++) {
             const seed = `${substr}_${epoch}_${i}`;
             const worker = createWorker();
-            promises.push(worker.makeAccount(aleo, seed));
+            promises.push(worker.makeAccount(snapId, seed));
         }
 
         const results = await Promise.all(promises);
 
         for (const result of results) {
             const { account, seed } = result;
-            const address = account.to_address();
+            const address = account.address;
             console.log(`${seed} => ${address}`);
 
             const ALEO_ADDR_PREFIX = 'aleo1';
             const prefix = `${ALEO_ADDR_PREFIX}${substr}`
             if (address.startsWith(prefix)) {
-                return account;
+                return { account, seed };
             }
         }
     } while (true);

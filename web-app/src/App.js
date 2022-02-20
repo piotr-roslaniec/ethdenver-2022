@@ -10,7 +10,7 @@ function App() {
     const [menuIndex, setMenuIndex] = useState(0);
 
     return (
-        <Layout className="layout" style={{ minHeight: '100vh' }}>
+        <Layout className="layout" style={{ minHeight: '100' }}>
             <Header className="header">
                 <div className="logo" />
                 <Menu mode="horizontal" defaultSelectedKeys={['1']}>
@@ -26,10 +26,10 @@ function App() {
                     </>
                 }
                 {
-                    menuIndex === 1 && <DecryptRecord />
+                    menuIndex === 1 && <SendTransaction />
                 }
             </Content>
-            <Footer style={{ textAlign: 'center' }}>Visit the <a href="https://github.com/AleoHQ/aleo">Aleo Github
+            <Footer style={{ textAlign: 'center' }}>Visit <a href="https://github.com/piotr-roslaniec/ethdenver-2022">our Github
                 repo</a>.</Footer>
         </Layout>
     );
