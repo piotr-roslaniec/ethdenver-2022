@@ -27,7 +27,7 @@ async function main() {
       // eslint-disable-next-line no-template-curly-in-string
       // 'const snapId = `local:${window.location.href}bundle.js`;', // Well-formatted URL ends with an '/'
       // eslint-disable-next-line no-template-curly-in-string
-      'const snapId = `${window.location.href}bundle.js`;', // Well-formatted URL ends with an '/'
+      'const snapId = `npm:aleo-snap`;', // Well-formatted URL ends with an '/'
       // 'const snapId = `npm:aleo-snap`;',
     ),
     // htmlContents,
