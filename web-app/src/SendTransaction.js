@@ -20,7 +20,9 @@ export const SendTransaction = () => {
         <Card title="Send a Transaction" style={{ width: "100%", borderRadius: "20px" }} bordered={false}>
             <Form {...layout} >
                 <p>We'll send a transaction using an account seed.</p>
-                <p>Info: You need to generate account first. Alternatively, try using a random seed.</p>
+                <p>Info: You need to generate account first.</p>
+                <p>If you've set your vanity address prefix to "e" in the previous step, try using "e_3_3".</p>
+                <p>Alternatively, try using a random seed.</p>
                 <Form.Item colon={false}>
                     <Input name="Seed" size="large" placeholder="Enter seed" onChange={(event) => setSeed(event.target.value)}
                         style={{ borderRadius: '20px' }} />

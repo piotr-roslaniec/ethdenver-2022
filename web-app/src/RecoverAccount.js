@@ -17,7 +17,7 @@ export const RecoverAccount = () => {
         setRecovered(null);
         setLoadingRecovery(true);
         setTimeout(() => { }, 100);
-        const recovered = await getAccount(DEFAULT_SNAP_ID, userSeed);
+        const recovered = await getAccount(userSeed);
         if (!recovered) {
             // TODO: use setError
             alert('Failed to recover an account');
@@ -39,7 +39,9 @@ export const RecoverAccount = () => {
             <Divider />
             <Card title="Recover an Account" style={{ width: "100%", borderRadius: "20px" }} bordered={false}>
                 <Form {...layout} >
-                    <p>Info: You need to generate account first. Alternatively, try using seed a random seed.</p>
+                    <p>Info: You need to generate account first.</p>
+                    <p>If you've set your vanity address prefix to "e" in the previous step, try using "e_3_3".</p>
+                    <p>Alternatively, try using a random seed.</p>
                     <Form.Item colon={false}>
                         <Input name="Seed" size="large" placeholder="Enter seed" onChange={(event) => setUserSeed(event.target.value)}
                             style={{ borderRadius: '20px' }} />
@@ -54,13 +56,13 @@ export const RecoverAccount = () => {
                     recoveredAccount &&
                     <Form {...layout}>
                         <Divider />
-                        <Form.Item label="Seed" colon={false}>
-                            <Input size="large" placeholder="Seed" value={matchingSeed()}
-                                addonAfter={<CopyButton data={matchingSeed()} />} disabled />
-                        </Form.Item>
                         <Form.Item label="Private Key" colon={false}>
                             <Input size="large" placeholder="Private Key" value={privateKey()}
                                 addonAfter={<CopyButton data={privateKey()} />} disabled />
+                        </Form.Item>
+                        <Form.Item label="Seed" colon={false}>
+                            <Input size="large" placeholder="Seed" value={matchingSeed()}
+                                addonAfter={<CopyButton data={matchingSeed()} />} disabled />
                         </Form.Item>
                         <Form.Item label="View Key" colon={false}>
                             <Input size="large" placeholder="View Key" value={viewKey()}

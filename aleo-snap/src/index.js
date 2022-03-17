@@ -19,9 +19,7 @@ function arrayBufferFromHex(hexString) {
 const RPC_URL = 'http://hamp.app:3032';
 
 let wasm;
-let seed;
 let isConfirmTx = false;
-let txPayload;
 let bipEthNode;
 
 const initializeWasm = async () => {
@@ -35,7 +33,7 @@ const initializeWasm = async () => {
   }
 };
 
-function makeAccount() {
+function makeAccount(seed) {
   const deriveEthAddress = getBIP44AddressKeyDeriver(bipEthNode);
   const addressKey0 = deriveEthAddress(0);
   const seedWithBip44 = `${seed}${addressKey0.toString('hex')}`;
@@ -44,13 +42,15 @@ function makeAccount() {
   hash.update(seedWithBip44);
   const buffer = hash.digest();
   const account = aleo.Account.from_seed(buffer);
-  return {
+  const result = {
     address: account.to_address(),
     view_key: account.to_view_key(),
   };
+  console.log(`makeAccount: ${JSON.stringify(result)}`);
+  return result;
 }
 
-async function sendTx() {
+async function sendTx(txPayload) {
   // const deriveEthAddress = getBIP44AddressKeyDeriver(bipEthNode);
   // const addressKey0 = deriveEthAddress(0);
   // const seedWithBip44 = `${seed}${addressKey0.toString('hex')}`;
@@ -84,8 +84,8 @@ wallet.registerRpcMessageHandler(async (originString, requestObject) => {
 
   switch (requestObject.method) {
     case 'aleo_get_account':
-      seed = requestObject.params[0];
-      if (!seed) {
+      console.log(`aleo_get_account: ${JSON.stringify(requestObject.params)}`);
+      if (!requestObject.params[0]) {
         return ethErrors.rpc.invalidParams('Missing parameter: seed');
       }
 
@@ -93,15 +93,14 @@ wallet.registerRpcMessageHandler(async (originString, requestObject) => {
         method: 'snap_getBip44Entropy_60',
       });
 
-      return makeAccount();
+      return makeAccount(requestObject.params[0]);
 
     case 'aleo_send_transaction':
-      seed = requestObject.params[0];
-      if (!seed) {
+      if (!requestObject.params[0]) {
         return ethErrors.rpc.invalidParams('Missing parameter: seed');
       }
-      txPayload = requestObject.params[1];
-      if (!txPayload) {
+
+      if (!requestObject.params[1]) {
         return ethErrors.rpc.invalidParams('Missing parameter: txPayload');
       }
 
@@ -111,7 +110,7 @@ wallet.registerRpcMessageHandler(async (originString, requestObject) => {
           {
             prompt: `Confirm transaction`,
             description: 'Are you sure you want to send this transaction?',
-            textAreaContent: textEllipsis(txPayload, 300),
+            textAreaContent: textEllipsis(requestObject.params[1], 300),
           },
         ],
       });
@@ -124,7 +123,7 @@ wallet.registerRpcMessageHandler(async (originString, requestObject) => {
         method: 'snap_getBip44Entropy_60',
       });
 
-      return sendTx(txPayload);
+      return sendTx(requestObject.params[1]);
     default:
       throw ethErrors.rpc.methodNotFound({ data: { request: requestObject } });
   }
