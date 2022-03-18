@@ -8,7 +8,7 @@
 
 ## Demo
 
-[Aleo Web Wallet Snap](https://reverent-jang-80780c.netlify.app/)
+[Aleo Web Wallet Snap](https://aleo-snap-ethdenver-2022.netlify.app/)
 
 ### Demo Instructions
 
