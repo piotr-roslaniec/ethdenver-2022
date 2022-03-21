@@ -1,5 +1,7 @@
 # Aleo Web Wallet Snap
 
+Access Aleo network from your browser using MetaMask
+
 ![Project logo](logo.png)
 
 ## How it works
